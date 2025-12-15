@@ -3,335 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L'Impact : Le Marteau Frappe le Clou</title>
+    <title>L'Impact : God Mode</title>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #0a0e27;
-            color: #ffffff;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #000; color: #fff; overflow: hidden; }
+
         .slide {
-            width: 1280px;
-            min-height: 720px;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)),
-                        url('https://picsum.photos/seed/cyberattack-exploit-chain/1280/720.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
+            width: 1280px; height: 720px; position: relative;
+            background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95)),
+                        url('https://picsum.photos/seed/hacker-root-access/1280/720.jpg');
+            background-size: cover; display: flex; flex-direction: column; padding: 40px 80px;
         }
-        .header {
-            padding: 40px 70px 20px;
+
+        .title { font-size: 48px; font-weight: 700; border-bottom: 4px solid #ff4d4d; display: inline-block; padding-bottom: 10px; margin-bottom: 30px; }
+
+        .content { display: flex; flex: 1; gap: 60px; align-items: center; }
+
+        /* GAUCHE : La Chaîne d'Exploitation (Kill Chain) */
+        .left-section { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+
+        .chain-link {
+            background: rgba(167, 199, 255, 0.1); border-radius: 10px; padding: 20px;
+            display: flex; align-items: center; position: relative;
+            border-left: 4px solid #a7c7ff;
         }
-        .title {
-            font-size: 40px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
+        /* Connecteurs entre les boîtes */
+        .chain-link:not(:last-child)::after {
+            content: ''; position: absolute; left: 30px; bottom: -25px;
+            width: 2px; height: 25px; background: rgba(255,255,255,0.3);
         }
-        .title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background-color: #ff4d4d;
+
+        .link-icon {
+            width: 50px; height: 50px; background: rgba(167, 199, 255, 0.2);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; font-size: 24px; color: #a7c7ff;
         }
-        .content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 70px 50px;
-        }
-        .phases-container {
-            display: flex;
-            flex-grow: 1;
-            margin-bottom: 30px;
-        }
-        .phase {
+        .link-content h3 { margin: 0 0 5px 0; color: #fff; font-size: 20px; }
+        .link-content p { margin: 0; color: #ccc; font-size: 16px; }
+
+        /* Le dernier maillon est rouge (Impact) */
+        .link-final { background: rgba(255, 77, 77, 0.1); border-left-color: #ff4d4d; }
+        .link-final .link-icon { background: rgba(255, 77, 77, 0.2); color: #ff4d4d; }
+        .link-final h3 { color: #ff4d4d; }
+
+        /* DROITE : Le Visuel "God Mode" */
+        .right-section {
             flex: 1;
-            padding: 0 15px;
-            display: flex;
-            flex-direction: column;
+            background: rgba(10, 14, 39, 0.6); border-radius: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; border: 1px solid rgba(255, 77, 77, 0.2);
+            position: relative; overflow: hidden;
         }
-        .phase-header {
-            background-color: rgba(167, 199, 255, 0.2);
-            border-radius: 10px 10px 0 0;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
+
+        /* Effet de brillance */
+        .glow-bg {
+            position: absolute; width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255,77,77,0.3) 0%, rgba(0,0,0,0) 70%);
+            animation: pulse-glow 3s infinite;
         }
-        .phase-number {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #ff4d4d;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 700;
-            margin-right: 15px;
+
+        .god-icon { font-size: 120px; color: #ff4d4d; margin-bottom: 20px; z-index: 2; text-shadow: 0 0 20px rgba(255, 77, 77, 0.5); }
+        .god-title { font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 10px; z-index: 2; text-transform: uppercase; letter-spacing: 2px; }
+        .god-desc { font-size: 20px; color: #ccc; text-align: center; z-index: 2; max-width: 80%; }
+
+        .privilege-badge {
+            margin-top: 30px; padding: 10px 20px; border-radius: 20px;
+            background: #ff4d4d; color: #fff; font-weight: bold; font-size: 18px;
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.5); z-index: 2;
         }
-        .phase-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: #a7c7ff;
-        }
-        .phase-content {
-            background-color: rgba(10, 14, 39, 0.7);
-            border-radius: 0 0 10px 10px;
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .phase-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-        .phase-icon {
-            color: #a7c7ff;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-        .phase-text {
-            font-size: 20px;
-            line-height: 1.4;
-        }
-        .highlight {
-            color: #ff4d4d;
-            font-weight: 600;
-        }
-        .impact-container {
-            background-color: rgba(255, 77, 77, 0.1);
-            border-radius: 10px;
-            padding: 25px;
-            border-left: 4px solid #ff4d4d;
-            display: flex;
-            align-items: center;
-        }
-        .impact-icon {
-            font-size: 60px;
-            color: #ff4d4d;
-            margin-right: 30px;
-        }
-        .impact-text {
-            font-size: 24px;
-            font-weight: 600;
-            line-height: 1.4;
-        }
-        .core-visual {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
-        .core {
-            width: 45%;
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .core-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-        .core-icon {
-            margin-right: 8px;
-            color: #a7c7ff;
-        }
-        .attacker-core .core-title {
-            color: #ff4d4d;
-        }
-        .attacker-core .core-icon {
-            color: #ff4d4d;
-        }
-        .core-desc {
-            font-size: 18px;
-            text-align: center;
-        }
-        .core-action {
-            margin-top: 10px;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .attacker-action {
-            background-color: rgba(255, 77, 77, 0.2);
-            color: #ff4d4d;
-        }
-        .victim-action {
-            background-color: rgba(167, 199, 255, 0.2);
-            color: #a7c7ff;
+
+        @keyframes pulse-glow {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(0.8); opacity: 0.5; }
         }
     </style>
 </head>
 <body>
     <div class="slide">
-        <div class="header">
-            <h1 class="title">L'Impact : Le Marteau Frappe le Clou</h1>
-        </div>
+        <h1 class="title">L'ATTAQUE CROSS-CORE : IMPACT</h1>
+
         <div class="content">
-            <div class="phases-container">
-                <div class="phase">
-                    <div class="phase-header">
-                        <div class="phase-number">1</div>
-                        <div class="phase-title">Préparation</div>
-                    </div>
-                    <div class="phase-content">
-                        <div class="phase-item">
-                            <i class="material-icons phase-icon">build</i>
-                            <div class="phase-text">
-                                <span class="highlight">Empoisonnement</span> du Northbridge
-                            </div>
-                        </div>
-                        <div class="phase-item">
-                            <i class="material-icons phase-icon">table_chart</i>
-                            <div class="phase-text">
-                                Préparation d'une <span class="highlight">fausse IDT</span>
-                            </div>
-                        </div>
-                        <div class="phase-item">
-                            <i class="material-icons phase-icon">code</i>
-                            <div class="phase-text">
-                                Pointe vers le code malveillant
-                            </div>
-                        </div>
+            <div class="left-section">
+                <div class="chain-link">
+                    <div class="link-icon"><i class="material-icons">build</i></div>
+                    <div class="link-content">
+                        <h3>1. Préparation</h3>
+                        <p>Empoisonnement du Northbridge & Fausse IDT en place.</p>
                     </div>
                 </div>
 
-                <div class="phase">
-                    <div class="phase-header">
-                        <div class="phase-number">2</div>
-                        <div class="phase-title">Lancement</div>
-                    </div>
-                    <div class="phase-content">
-                        <div class="core-visual">
-                            <div class="core attacker-core">
-                                <div class="core-title">
-                                    <i class="material-icons core-icon">memory</i>
-                                    Cœur 1 (Attaquant)
-                                </div>
-                                <div class="core-desc">
-                                    Lance l'instruction "fusible"
-                                </div>
-                                <div class="core-action attacker-action">
-                                    Accès mémoire non-aligné
-                                </div>
-                            </div>
-
-                            <div class="core victim-core">
-                                <div class="core-title">
-                                    <i class="material-icons core-icon">memory</i>
-                                    Cœur 0 (Victime)
-                                </div>
-                                <div class="core-desc">
-                                    Forcé d'entrer en SMM
-                                </div>
-                                <div class="core-action victim-action">
-                                    Entrée en mode privilégié
-                                </div>
-                            </div>
-                        </div>
+                <div class="chain-link">
+                    <div class="link-icon"><i class="material-icons">timer</i></div>
+                    <div class="link-content">
+                        <h3>2. Tir Synchronisé</h3>
+                        <p>L'erreur retardée (12 000 cycles) frappe le Cœur victime à l'instant T.</p>
                     </div>
                 </div>
 
-                <div class="phase">
-                    <div class="phase-header">
-                        <div class="phase-number">3</div>
-                        <div class="phase-title">Impact</div>
-                    </div>
-                    <div class="phase-content">
-                        <div class="phase-item">
-                            <i class="material-icons phase-icon">timer</i>
-                            <div class="phase-text">
-                                Après <span class="highlight">12 000 cycles</span>, la MCE frappe
-                            </div>
-                        </div>
-                        <div class="phase-item">
-                            <i class="material-icons phase-icon">security</i>
-                            <div class="phase-text">
-                                Le Cœur 0 est en SMM avec l'IDT malveillante
-                            </div>
-                        </div>
-                        <div class="phase-item">
-                            <i class="material-icons phase-icon">verified_user</i>
-                            <div class="phase-text">
-                                Le code s'exécute avec les privilèges du <span class="highlight">Ring -2</span>
-                            </div>
-                        </div>
+                <div class="chain-link link-final">
+                    <div class="link-icon"><i class="material-icons">gavel</i></div>
+                    <div class="link-content">
+                        <h3>3. Brèche SMM</h3>
+                        <p>Le processeur exécute notre code avec les privilèges Ring -2.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="impact-container">
-                <i class="material-icons impact-icon">gavel</i>
-                <div class="impact-text">
-                    La forteresse SMM est compromise : l'attaquant obtient un <span class="highlight">contrôle absolu</span> sur le système
-                </div>
+            <div class="right-section">
+                <div class="glow-bg"></div>
+                <i class="material-icons god-icon">vpn_key</i>
+                <div class="god-title">GOD MODE</div>
+                <div class="god-desc">Contrôle total, persistant et invisible du système.</div>
+                <div class="privilege-badge">ACCESS GRANTED: RING -2</div>
             </div>
         </div>
     </div>
-<script>
+
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. AUTO-ZOOM ---
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
-            const baseWidth = 1280;
-            const baseHeight = 720;
-            const winWidth = window.innerWidth;
-            const winHeight = window.innerHeight;
-            const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
+            const baseWidth = 1280; const baseHeight = 720;
+            const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
             slide.style.transform = `scale(${scale})`;
-            document.body.style.height = '100vh';
-            document.body.style.margin = '0';
-            document.body.style.display = 'flex';
-            document.body.style.justifyContent = 'center';
-            document.body.style.alignItems = 'center';
-            document.body.style.overflow = 'hidden';
-            document.body.style.backgroundColor = '#000';
+            document.body.style.height = '100vh'; document.body.style.margin = '0';
+            document.body.style.display = 'flex'; document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center'; document.body.style.backgroundColor = '#000'; document.body.style.overflow = 'hidden';
         }
-        fitSlide();
-        window.addEventListener('resize', fitSlide);
+        fitSlide(); window.addEventListener('resize', fitSlide);
 
-        // --- 2. NAVIGATION (11 SLIDES) ---
+        // NAVIGATION (11 SLIDES)
         const slides = [
-            'slide1.html',  // Intro
-            'slide2.html',  // Cible SMM
-            'slide3.html',  // Arme MCE
-            'slide4.html',  // Brèche (Votre slide bonus)
-            'slide5.html',  // Forge
-            'slide6.html',  // Problème Timing
-            'slide7.html',  // Solution PCIe
-            'slide8.html',  // Fenêtre de Tir (Nouvelle)
-            'slide9.html',  // Attaque Cross-Core
-            'slide10.html', // Impact
-            'slide11.html'  // Conclusion
+            'slide1.html', 'slide2.html', 'slide3.html', 'slide4.html',
+            'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html',
+            'slide9.html', 'slide10.html', 'slide11.html'
         ];
-
         const path = window.location.pathname;
         const page = path.split("/").pop() || 'slide1.html';
         const currentIndex = slides.indexOf(decodeURIComponent(page));
@@ -349,17 +159,10 @@
         });
 
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
-        const leftZone = document.createElement('div');
-        leftZone.style.cssText = navStyle + "left:0;";
-        leftZone.onclick = () => goToSlide(-1);
-
-        const rightZone = document.createElement('div');
-        rightZone.style.cssText = navStyle + "right:0;";
-        rightZone.onclick = () => goToSlide(1);
-
-        document.body.appendChild(leftZone);
-        document.body.appendChild(rightZone);
+        const leftZone = document.createElement('div'); leftZone.style.cssText = navStyle + "left:0;"; leftZone.onclick = () => goToSlide(-1);
+        const rightZone = document.createElement('div'); rightZone.style.cssText = navStyle + "right:0;"; rightZone.onclick = () => goToSlide(1);
+        document.body.appendChild(leftZone); document.body.appendChild(rightZone);
     });
-</script>
+    </script>
 </body>
 </html>

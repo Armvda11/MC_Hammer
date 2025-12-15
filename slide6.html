@@ -3,174 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Une Course Contre la Montre</title>
+    <title>Le Problème de Timing</title>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        /* ... (Gardez tout votre style CSS existant à l'identique jusqu'à la fin du head) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Source Sans Pro', sans-serif; background-color: #0a0e27; color: #ffffff; }
-        .slide { width: 1280px; min-height: 720px; position: relative; overflow: hidden; background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)), url('https://picsum.photos/seed/race-condition-timing-cpu-cycles/1280/720.jpg'); background-size: cover; background-position: center; display: flex; flex-direction: column; }
-        .header { padding: 40px 70px 20px; }
-        .title { font-size: 40px; font-weight: 700; color: #ffffff; margin-bottom: 10px; position: relative; display: inline-block; }
-        .title::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 80px; height: 4px; background-color: #ff4d4d; }
-        .content { flex-grow: 1; display: flex; padding: 20px 70px 50px; }
-        .left-section { flex: 1; padding-right: 40px; display: flex; flex-direction: column; justify-content: center; }
-        .right-section { flex: 1; display: flex; align-items: center; justify-content: center; }
-        .race-condition { background-color: rgba(167, 199, 255, 0.1); border-radius: 10px; padding: 30px; margin-bottom: 30px; }
-        .section-title { font-size: 28px; font-weight: 600; color: #a7c7ff; margin-bottom: 20px; display: flex; align-items: center; }
-        .section-icon { margin-right: 15px; color: #a7c7ff; }
-        .steps { margin-top: 20px; }
-        .step { display: flex; align-items: flex-start; margin-bottom: 15px; }
-        .step-number { width: 30px; height: 30px; border-radius: 50%; background-color: #a7c7ff; color: #0a0e27; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; margin-right: 15px; flex-shrink: 0; }
-        .step-text { font-size: 20px; line-height: 1.4; }
-        .highlight { color: #ff4d4d; font-weight: 600; }
-        .window { background-color: rgba(255, 77, 77, 0.1); border-radius: 10px; padding: 30px; border-left: 4px solid #ff4d4d; }
-        .visual-container { width: 100%; height: 450px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .timeline { width: 100%; height: 80px; position: relative; margin-bottom: 40px; }
-        .phase { position: absolute; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; border-radius: 8px; top: 0; }
-        .phase-1 { left: 0; width: 33%; background-color: rgba(167, 199, 255, 0.2); border: 1px solid #a7c7ff; z-index: 1; }
-        .phase-2 { left: 33%; width: 34%; background-color: rgba(255, 77, 77, 0.3); border: 2px solid #ff4d4d; z-index: 2; }
-        .phase-3 { left: 67%; width: 33%; background-color: rgba(167, 199, 255, 0.2); border: 1px solid #a7c7ff; z-index: 1; }
-        .phase-label { font-size: 16px; margin-top: 5px; }
-        .attack-window { position: absolute; top: -120px; left: 33%; width: 34%; height: 120px; background-color: rgba(255, 77, 77, 0.1); border: 2px dashed #ff4d4d; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3; }
-        .window-label { font-size: 16px; font-weight: 600; color: #ff4d4d; margin-bottom: 10px; }
-        .window-value { font-size: 36px; font-weight: 700; color: #ff4d4d; }
-        .cycles-comparison { width: 100%; display: flex; justify-content: space-between; margin-top: 40px; }
-        .cycle-bar { width: 48%; height: 120px; background-color: rgba(10, 14, 39, 0.7); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .bar-label { font-size: 18px; font-weight: 600; margin-bottom: 15px; text-align: center; }
-        .bar-container { width: 80%; height: 40px; background-color: rgba(167, 199, 255, 0.2); border-radius: 20px; position: relative; overflow: hidden; }
-        .bar-fill { position: absolute; top: 0; left: 0; height: 100%; border-radius: 20px; }
-        .too-fast { width: 10%; background-color: #a7c7ff; } /* Ajusté pour représenter 700 vs 12000 */
-        .perfect { width: 90%; background-color: #ff4d4d; }
-        .bar-value { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 16px; font-weight: 600; color: #ffffff; }
-        .bar-status { font-size: 16px; margin-top: 10px; }
-        .too-fast-status { color: #a7c7ff; }
-        .perfect-status { color: #ff4d4d; }
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #000; color: #fff; overflow: hidden; }
+
+        .slide {
+            width: 1280px; height: 720px; position: relative;
+            background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95)),
+                        url('https://picsum.photos/seed/race-car-crash-wall/1280/720.jpg');
+            background-size: cover; display: flex; flex-direction: column; padding: 40px 80px;
+        }
+
+        .title { font-size: 48px; font-weight: 700; border-bottom: 4px solid #ff4d4d; display: inline-block; padding-bottom: 10px; margin-bottom: 40px; }
+
+        .content { display: flex; flex: 1; gap: 60px; align-items: center; }
+
+        /* GAUCHE : L'Explication Simple */
+        .left-section { flex: 0.8; display: flex; flex-direction: column; gap: 30px; }
+
+        .concept-box {
+            background: rgba(167, 199, 255, 0.1); border-radius: 12px; padding: 25px;
+            border-left: 4px solid #a7c7ff;
+        }
+        .box-title { font-size: 24px; font-weight: 600; color: #a7c7ff; margin-bottom: 10px; display: flex; align-items: center; }
+        .box-text { font-size: 20px; line-height: 1.4; color: #ddd; }
+
+        .crash-box {
+            background: rgba(255, 77, 77, 0.1); border-radius: 12px; padding: 25px;
+            border-left: 4px solid #ff4d4d;
+        }
+        .crash-title { font-size: 24px; font-weight: 600; color: #ff4d4d; margin-bottom: 10px; display: flex; align-items: center; }
+
+        /* DROITE : Le Visuel de la Course */
+        .right-section {
+            flex: 1.2;
+            background: rgba(10, 14, 39, 0.8); border-radius: 20px; padding: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        /* Pistes de course */
+        .track-label { font-size: 18px; font-weight: bold; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .track {
+            width: 100%; height: 60px; background: rgba(255,255,255,0.1);
+            border-radius: 30px; margin-bottom: 40px; position: relative; overflow: hidden;
+        }
+
+        /* Barre Attaque (Rapide) */
+        .bar-attack {
+            position: absolute; left: 0; top: 0; height: 100%; width: 15%; /* 700 vs 10000 */
+            background: linear-gradient(90deg, #ff4d4d, #ff0000);
+            border-radius: 30px 0 0 30px;
+            display: flex; align-items: center; justify-content: flex-end; padding-right: 15px;
+            box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
+        }
+        .crash-icon {
+            position: absolute; left: 15%; top: 50%; transform: translate(-50%, -50%);
+            font-size: 50px; color: #ff4d4d; text-shadow: 0 0 10px #fff;
+            z-index: 10; animation: shake 0.5s infinite;
+        }
+        .wall {
+            position: absolute; left: 15%; top: 0; height: 100%; width: 4px; background: #fff;
+        }
+
+        /* Barre Cible (Lente) */
+        .bar-target {
+            position: absolute; left: 0; top: 0; height: 100%; width: 100%;
+            background: transparent;
+            display: flex; align-items: center;
+        }
+        .loading-bar {
+            height: 100%; width: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(76, 175, 80, 0.1),
+                rgba(76, 175, 80, 0.1) 10px,
+                rgba(76, 175, 80, 0.2) 10px,
+                rgba(76, 175, 80, 0.2) 20px
+            );
+        }
+        .target-marker {
+            position: absolute; right: 0; top: 0; height: 100%; width: 4px; background: #4CAF50;
+            box-shadow: 0 0 15px #4CAF50;
+        }
+
+        .cycle-count { font-family: monospace; font-size: 24px; font-weight: bold; }
+
+        @keyframes shake {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            25% { transform: translate(-55%, -55%) rotate(-5deg); }
+            50% { transform: translate(-45%, -45%) rotate(5deg); }
+            75% { transform: translate(-55%, -45%) rotate(-5deg); }
+            100% { transform: translate(-50%, -50%) rotate(0deg); }
+        }
     </style>
 </head>
 <body>
     <div class="slide">
-        <div class="header">
-            <h1 class="title">Le Problème de Timing (Too Fast)</h1>
-        </div>
+        <h1 class="title">LE PROBLÈME DE TIMING</h1>
+
         <div class="content">
             <div class="left-section">
-                <div class="race-condition">
-                    <div class="section-title">
-                        <i class="material-icons section-icon">timer</i>
-                        L'Échec Initial
-                    </div>
-                    <div class="steps">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-text">L'attaque MCE est <span class="highlight">asynchrone</span></div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-text">Elle frappe en seulement <span class="highlight">700 cycles</span></div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-text">Le SMM n'est pas encore prêt</div>
-                        </div>
+                <div class="concept-box">
+                    <div class="box-title"><i class="material-icons" style="margin-right:10px">speed</i> La Vitesse</div>
+                    <div class="box-text">
+                        L'injection d'erreur (MCE) est <strong>instantanée</strong>.<br>
+                        Dès que l'instruction est lancée, la foudre tombe.
                     </div>
                 </div>
-                <div class="window">
-                    <div class="section-title">
-                        <i class="material-icons section-icon">flash_on</i>
-                        La Fenêtre Cible
-                    </div>
-                    <div class="step-text">
-                        <div>• L'entrée en SMM prend environ <span class="highlight">10 000 cycles</span> </div>
-                        <div>• Pour réussir, l'erreur doit arriver <span class="highlight">exactement</span> à ce moment</div>
-                        <div>• L'attaque standard est <strong>trop rapide</strong> : le système plante avant l'ouverture du SMM </div>
+
+                <div class="crash-box">
+                    <div class="crash-title"><i class="material-icons" style="margin-right:10px">error_outline</i> Le Crash</div>
+                    <div class="box-text">
+                        Le système plante (Blue Screen) <strong>bien avant</strong> que la porte du SMM ne soit ouverte.<br>
+                        <span style="color:#ff4d4d; font-weight:bold; margin-top:10px; display:block;">GAME OVER.</span>
                     </div>
                 </div>
             </div>
+
             <div class="right-section">
-                <div class="visual-container">
-                    <div class="timeline">
-                        <div class="phase phase-1">
-                            <div>Attaque MCE</div>
-                            <div class="phase-label">700 cycles</div>
-                        </div>
-                        <div class="phase phase-2">
-                            <div>... Attente ...</div>
-                            <div class="phase-label">Trop tôt</div>
-                        </div>
-                        <div class="phase phase-3">
-                            <div>Entrée SMM</div>
-                            <div class="phase-label">10 000 cycles</div>
-                        </div>
-
-                        <div class="attack-window" style="left: 0; width: 33%;">
-                            <div class="window-label">IMPACT ACTUEL</div>
-                            <div class="window-value">700</div>
-                            <div class="window-label">cycles CPU</div>
-                        </div>
+                <div class="track-label">
+                    <span style="color:#ff4d4d">NOTRE ATTAQUE</span>
+                    <span class="cycle-count" style="color:#ff4d4d">700 Cycles</span>
+                </div>
+                <div class="track">
+                    <div class="bar-attack">
+                        <i class="material-icons" style="color:#fff; font-size:24px;">flash_on</i>
                     </div>
+                    <div class="wall"></div>
+                    <i class="material-icons crash-icon">report_problem</i>
+                </div>
 
-                    <div class="cycles-comparison">
-                        <div class="cycle-bar">
-                            <div class="bar-label">MCE Standard</div>
-                            <div class="bar-container">
-                                <div class="bar-fill too-fast"></div>
-                                <div class="bar-value">700</div>
-                            </div>
-                            <div class="bar-status too-fast-status">Trop Rapide (Crash)</div>
-                        </div>
-                        <div class="cycle-bar">
-                            <div class="bar-label">Cible SMM</div>
-                            <div class="bar-container">
-                                <div class="bar-fill perfect"></div>
-                                <div class="bar-value">10 000</div>
-                            </div>
-                            <div class="bar-status perfect-status">Fenêtre Requise</div>
-                        </div>
-                    </div>
+                <div class="track-label">
+                    <span style="color:#4CAF50">OUVERTURE SMM</span>
+                    <span class="cycle-count" style="color:#4CAF50">10 000 Cycles</span>
+                </div>
+                <div class="track">
+                    <div class="loading-bar"></div>
+                    <div class="target-marker"></div>
+                    <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #4CAF50; font-size: 14px; font-weight: bold;">OBJECTIF</div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; font-size: 20px; color: #aaa;">
+                    <em>"Nous courons un sprint, le SMM court un marathon."</em>
                 </div>
             </div>
         </div>
     </div>
-<script>
+
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. AUTO-ZOOM ---
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
-            const baseWidth = 1280;
-            const baseHeight = 720;
-            const winWidth = window.innerWidth;
-            const winHeight = window.innerHeight;
-            const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
+            const baseWidth = 1280; const baseHeight = 720;
+            const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
             slide.style.transform = `scale(${scale})`;
-            document.body.style.height = '100vh';
-            document.body.style.margin = '0';
-            document.body.style.display = 'flex';
-            document.body.style.justifyContent = 'center';
-            document.body.style.alignItems = 'center';
-            document.body.style.overflow = 'hidden';
-            document.body.style.backgroundColor = '#000';
+            document.body.style.height = '100vh'; document.body.style.margin = '0';
+            document.body.style.display = 'flex'; document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center'; document.body.style.backgroundColor = '#000'; document.body.style.overflow = 'hidden';
         }
-        fitSlide();
-        window.addEventListener('resize', fitSlide);
+        fitSlide(); window.addEventListener('resize', fitSlide);
 
-        // --- 2. NAVIGATION (11 SLIDES) ---
+        // NAVIGATION (11 SLIDES)
         const slides = [
-            'slide1.html',  // Intro
-            'slide2.html',  // Cible SMM
-            'slide3.html',  // Arme MCE
-            'slide4.html',  // Brèche (Votre slide bonus)
-            'slide5.html',  // Forge
-            'slide6.html',  // Problème Timing
-            'slide7.html',  // Solution PCIe
-            'slide8.html',  // Fenêtre de Tir (Nouvelle)
-            'slide9.html',  // Attaque Cross-Core
-            'slide10.html', // Impact
-            'slide11.html'  // Conclusion
+            'slide1.html', 'slide2.html', 'slide3.html', 'slide4.html',
+            'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html',
+            'slide9.html', 'slide10.html', 'slide11.html'
         ];
-
         const path = window.location.pathname;
         const page = path.split("/").pop() || 'slide1.html';
         const currentIndex = slides.indexOf(decodeURIComponent(page));
@@ -188,17 +191,10 @@
         });
 
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
-        const leftZone = document.createElement('div');
-        leftZone.style.cssText = navStyle + "left:0;";
-        leftZone.onclick = () => goToSlide(-1);
-
-        const rightZone = document.createElement('div');
-        rightZone.style.cssText = navStyle + "right:0;";
-        rightZone.onclick = () => goToSlide(1);
-
-        document.body.appendChild(leftZone);
-        document.body.appendChild(rightZone);
+        const leftZone = document.createElement('div'); leftZone.style.cssText = navStyle + "left:0;"; leftZone.onclick = () => goToSlide(-1);
+        const rightZone = document.createElement('div'); rightZone.style.cssText = navStyle + "right:0;"; rightZone.onclick = () => goToSlide(1);
+        document.body.appendChild(leftZone); document.body.appendChild(rightZone);
     });
-</script>
+    </script>
 </body>
 </html>
