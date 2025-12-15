@@ -7,302 +7,84 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #0a0e27;
-            color: #ffffff;
-        }
-        .slide {
-            width: 1280px;
-            min-height: 720px;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)),
-                        url('https://picsum.photos/seed/race-condition-timing-cpu-cycles/1280/720.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-        }
-        .header {
-            padding: 40px 70px 20px;
-        }
-        .title {
-            font-size: 40px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
-        }
-        .title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background-color: #ff4d4d;
-        }
-        .content {
-            flex-grow: 1;
-            display: flex;
-            padding: 20px 70px 50px;
-        }
-        .left-section {
-            flex: 1;
-            padding-right: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .right-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .race-condition {
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-        .section-title {
-            font-size: 28px;
-            font-weight: 600;
-            color: #a7c7ff;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-        }
-        .section-icon {
-            margin-right: 15px;
-            color: #a7c7ff;
-        }
-        .steps {
-            margin-top: 20px;
-        }
-        .step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-        .step-number {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: #a7c7ff;
-            color: #0a0e27;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: 700;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-        .step-text {
-            font-size: 20px;
-            line-height: 1.4;
-        }
-        .highlight {
-            color: #ff4d4d;
-            font-weight: 600;
-        }
-        .window {
-            background-color: rgba(255, 77, 77, 0.1);
-            border-radius: 10px;
-            padding: 30px;
-            border-left: 4px solid #ff4d4d;
-        }
-        .visual-container {
-            width: 100%;
-            height: 450px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .timeline {
-            width: 100%;
-            height: 80px;
-            position: relative;
-            margin-bottom: 40px;
-        }
-        .phase {
-            position: absolute;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 8px;
-            top: 0;
-        }
-        .phase-1 {
-            left: 0;
-            width: 33%;
-            background-color: rgba(167, 199, 255, 0.2);
-            border: 1px solid #a7c7ff;
-            z-index: 1;
-        }
-        .phase-2 {
-            left: 33%;
-            width: 34%;
-            background-color: rgba(255, 77, 77, 0.3);
-            border: 2px solid #ff4d4d;
-            z-index: 2;
-        }
-        .phase-3 {
-            left: 67%;
-            width: 33%;
-            background-color: rgba(167, 199, 255, 0.2);
-            border: 1px solid #a7c7ff;
-            z-index: 1;
-        }
-        .phase-label {
-            font-size: 16px;
-            margin-top: 5px;
-        }
-        .attack-window {
-            position: absolute;
-            top: -20px;
-            left: 33%;
-            width: 34%;
-            height: 120px;
-            background-color: rgba(255, 77, 77, 0.1);
-            border: 2px dashed #ff4d4d;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 3;
-        }
-        .window-label {
-            font-size: 16px;
-            font-weight: 600;
-            color: #ff4d4d;
-            margin-bottom: 10px;
-        }
-        .window-value {
-            font-size: 36px;
-            font-weight: 700;
-            color: #ff4d4d;
-        }
-        .cycles-comparison {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-        }
-        .cycle-bar {
-            width: 48%;
-            height: 120px;
-            background-color: rgba(10, 14, 39, 0.7);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .bar-label {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .bar-container {
-            width: 80%;
-            height: 40px;
-            background-color: rgba(167, 199, 255, 0.2);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        .bar-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            border-radius: 20px;
-        }
-        .too-fast {
-            width: 70%;
-            background-color: #a7c7ff;
-        }
-        .perfect {
-            width: 14%;
-            background-color: #ff4d4d;
-        }
-        .bar-value {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-        .bar-status {
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        .too-fast-status {
-            color: #a7c7ff;
-        }
-        .perfect-status {
-            color: #ff4d4d;
-        }
+        /* ... (Gardez tout votre style CSS existant à l'identique jusqu'à la fin du head) ... */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #0a0e27; color: #ffffff; }
+        .slide { width: 1280px; min-height: 720px; position: relative; overflow: hidden; background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)), url('https://picsum.photos/seed/race-condition-timing-cpu-cycles/1280/720.jpg'); background-size: cover; background-position: center; display: flex; flex-direction: column; }
+        .header { padding: 40px 70px 20px; }
+        .title { font-size: 40px; font-weight: 700; color: #ffffff; margin-bottom: 10px; position: relative; display: inline-block; }
+        .title::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 80px; height: 4px; background-color: #ff4d4d; }
+        .content { flex-grow: 1; display: flex; padding: 20px 70px 50px; }
+        .left-section { flex: 1; padding-right: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .right-section { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .race-condition { background-color: rgba(167, 199, 255, 0.1); border-radius: 10px; padding: 30px; margin-bottom: 30px; }
+        .section-title { font-size: 28px; font-weight: 600; color: #a7c7ff; margin-bottom: 20px; display: flex; align-items: center; }
+        .section-icon { margin-right: 15px; color: #a7c7ff; }
+        .steps { margin-top: 20px; }
+        .step { display: flex; align-items: flex-start; margin-bottom: 15px; }
+        .step-number { width: 30px; height: 30px; border-radius: 50%; background-color: #a7c7ff; color: #0a0e27; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; margin-right: 15px; flex-shrink: 0; }
+        .step-text { font-size: 20px; line-height: 1.4; }
+        .highlight { color: #ff4d4d; font-weight: 600; }
+        .window { background-color: rgba(255, 77, 77, 0.1); border-radius: 10px; padding: 30px; border-left: 4px solid #ff4d4d; }
+        .visual-container { width: 100%; height: 450px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .timeline { width: 100%; height: 80px; position: relative; margin-bottom: 40px; }
+        .phase { position: absolute; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; border-radius: 8px; top: 0; }
+        .phase-1 { left: 0; width: 33%; background-color: rgba(167, 199, 255, 0.2); border: 1px solid #a7c7ff; z-index: 1; }
+        .phase-2 { left: 33%; width: 34%; background-color: rgba(255, 77, 77, 0.3); border: 2px solid #ff4d4d; z-index: 2; }
+        .phase-3 { left: 67%; width: 33%; background-color: rgba(167, 199, 255, 0.2); border: 1px solid #a7c7ff; z-index: 1; }
+        .phase-label { font-size: 16px; margin-top: 5px; }
+        .attack-window { position: absolute; top: -120px; left: 33%; width: 34%; height: 120px; background-color: rgba(255, 77, 77, 0.1); border: 2px dashed #ff4d4d; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3; }
+        .window-label { font-size: 16px; font-weight: 600; color: #ff4d4d; margin-bottom: 10px; }
+        .window-value { font-size: 36px; font-weight: 700; color: #ff4d4d; }
+        .cycles-comparison { width: 100%; display: flex; justify-content: space-between; margin-top: 40px; }
+        .cycle-bar { width: 48%; height: 120px; background-color: rgba(10, 14, 39, 0.7); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .bar-label { font-size: 18px; font-weight: 600; margin-bottom: 15px; text-align: center; }
+        .bar-container { width: 80%; height: 40px; background-color: rgba(167, 199, 255, 0.2); border-radius: 20px; position: relative; overflow: hidden; }
+        .bar-fill { position: absolute; top: 0; left: 0; height: 100%; border-radius: 20px; }
+        .too-fast { width: 10%; background-color: #a7c7ff; } /* Ajusté pour représenter 700 vs 12000 */
+        .perfect { width: 90%; background-color: #ff4d4d; }
+        .bar-value { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 16px; font-weight: 600; color: #ffffff; }
+        .bar-status { font-size: 16px; margin-top: 10px; }
+        .too-fast-status { color: #a7c7ff; }
+        .perfect-status { color: #ff4d4d; }
     </style>
 </head>
 <body>
     <div class="slide">
         <div class="header">
-            <h1 class="title">Une Course Contre la Montre</h1>
+            <h1 class="title">Le Problème de Timing (Too Fast)</h1>
         </div>
         <div class="content">
             <div class="left-section">
                 <div class="race-condition">
                     <div class="section-title">
                         <i class="material-icons section-icon">timer</i>
-                        La "Race Condition"
+                        L'Échec Initial
                     </div>
                     <div class="steps">
                         <div class="step">
                             <div class="step-number">1</div>
-                            <div class="step-text">Le thread victime entre en SMM</div>
+                            <div class="step-text">L'attaque MCE est <span class="highlight">asynchrone</span></div>
                         </div>
                         <div class="step">
                             <div class="step-number">2</div>
-                            <div class="step-text">Il active la gestion des MCE</div>
+                            <div class="step-text">Elle frappe en seulement <span class="highlight">700 cycles</span></div>
                         </div>
                         <div class="step">
                             <div class="step-number">3</div>
-                            <div class="step-text">Il charge sa propre table d'interruption sécurisée</div>
+                            <div class="step-text">Le SMM n'est pas encore prêt</div>
                         </div>
                     </div>
                 </div>
                 <div class="window">
                     <div class="section-title">
                         <i class="material-icons section-icon">flash_on</i>
-                        La Fenêtre de Tir
+                        La Fenêtre Cible
                     </div>
                     <div class="step-text">
-                        <div>• L'attaque doit frapper <span class="highlight">entre l'étape 2 et 3</span></div>
-                        <div>• Durée de la fenêtre : <span class="highlight">environ 100 cycles CPU</span></div>
-                        <div>• Soit quelques nanosecondes</div>
-                        <div>• Les méthodes classiques sont soit trop rapides (700 cycles), soit imprécises</div>
+                        <div>• L'entrée en SMM prend environ <span class="highlight">10 000 cycles</span> </div>
+                        <div>• Pour réussir, l'erreur doit arriver <span class="highlight">exactement</span> à ce moment</div>
+                        <div>• L'attaque standard est <strong>trop rapide</strong> : le système plante avant l'ouverture du SMM </div>
                     </div>
                 </div>
             </div>
@@ -310,93 +92,77 @@
                 <div class="visual-container">
                     <div class="timeline">
                         <div class="phase phase-1">
-                            <div>Entrée SMM</div>
-                            <div class="phase-label">Étape 1</div>
+                            <div>Attaque MCE</div>
+                            <div class="phase-label">700 cycles</div>
                         </div>
                         <div class="phase phase-2">
-                            <div>Activation MCE</div>
-                            <div class="phase-label">Étape 2</div>
+                            <div>... Attente ...</div>
+                            <div class="phase-label">Trop tôt</div>
                         </div>
                         <div class="phase phase-3">
-                            <div>Chargement IDT</div>
-                            <div class="phase-label">Étape 3</div>
+                            <div>Entrée SMM</div>
+                            <div class="phase-label">10 000 cycles</div>
                         </div>
 
-                        <div class="attack-window">
-                            <div class="window-label">FENÊTRE D'ATTAQUE</div>
-                            <div class="window-value">100</div>
+                        <div class="attack-window" style="left: 0; width: 33%;">
+                            <div class="window-label">IMPACT ACTUEL</div>
+                            <div class="window-value">700</div>
                             <div class="window-label">cycles CPU</div>
                         </div>
                     </div>
 
                     <div class="cycles-comparison">
                         <div class="cycle-bar">
-                            <div class="bar-label">Méthodes classiques</div>
+                            <div class="bar-label">MCE Standard</div>
                             <div class="bar-container">
                                 <div class="bar-fill too-fast"></div>
-                                <div class="bar-value">700 cycles</div>
+                                <div class="bar-value">700</div>
                             </div>
-                            <div class="bar-status too-fast-status">Trop rapide</div>
+                            <div class="bar-status too-fast-status">Trop Rapide (Crash)</div>
                         </div>
                         <div class="cycle-bar">
-                            <div class="bar-label">Délai nécessaire</div>
+                            <div class="bar-label">Cible SMM</div>
                             <div class="bar-container">
                                 <div class="bar-fill perfect"></div>
-                                <div class="bar-value">100 cycles</div>
+                                <div class="bar-value">10 000</div>
                             </div>
-                            <div class="bar-status perfect-status">Fenêtre d'attaque</div>
+                            <div class="bar-status perfect-status">Fenêtre Requise</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-   <script>
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- PARTIE 1 : AUTO-ZOOM (ADAPTATION ÉCRAN) ---
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
-
-            // Vos dimensions originales
             const baseWidth = 1280;
             const baseHeight = 720;
-
-            // Dimensions de la fenêtre actuelle
             const winWidth = window.innerWidth;
             const winHeight = window.innerHeight;
-
-            // Calcul du ratio pour que tout rentre sans déborder
             const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
-
-            // Application du zoom
             slide.style.transform = `scale(${scale})`;
-
-            // On force le centrage et le fond noir via JS pour ne pas toucher votre CSS
             document.body.style.height = '100vh';
             document.body.style.margin = '0';
             document.body.style.display = 'flex';
             document.body.style.justifyContent = 'center';
             document.body.style.alignItems = 'center';
-            document.body.style.overflow = 'hidden'; // Stop les scrollbars
-            document.body.style.backgroundColor = '#000'; // Bandes noires cinémas
+            document.body.style.overflow = 'hidden';
+            document.body.style.backgroundColor = '#000';
         }
-
-        // Lancer au chargement et si on redimensionne la fenêtre
         fitSlide();
         window.addEventListener('resize', fitSlide);
 
-
-        // --- PARTIE 2 : NAVIGATION ---
         const slides = [
             'index.html', '2.html', '3.html', '4.html',
             '5.html', '6.html', '7.html', '8.html',
             '9.html', '10.html'
         ];
-
         const path = window.location.pathname;
         const page = path.split("/").pop() || 'index.html';
-        const currentIndex = slides.indexOf(decodeURIComponent(page)); // decode pour gérer les %20 éventuels
+        const currentIndex = slides.indexOf(decodeURIComponent(page));
 
         function goToSlide(direction) {
             let nextIndex = currentIndex + direction;
@@ -410,19 +176,16 @@
             if (e.key === 'ArrowLeft') goToSlide(-1);
         });
 
-        // Zones de clic invisibles (Gauche/Droite)
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
         const leftZone = document.createElement('div');
         leftZone.style.cssText = navStyle + "left:0;";
         leftZone.onclick = () => goToSlide(-1);
-
         const rightZone = document.createElement('div');
         rightZone.style.cssText = navStyle + "right:0;";
         rightZone.onclick = () => goToSlide(1);
-
         document.body.appendChild(leftZone);
         document.body.appendChild(rightZone);
     });
 </script>
 </body>
-<!-- </html> -->
+</html>

@@ -3,350 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Générateur de Délai : L'Accès Mémoire "Sale"</title>
+    <title>La Solution (PCIe)</title>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
             font-family: 'Source Sans Pro', sans-serif;
-            background-color: #0a0e27;
+            background-color: #000;
             color: #ffffff;
+            margin: 0;
+            overflow: hidden; /* Important pour le zoom */
         }
         .slide {
             width: 1280px;
-            min-height: 720px;
+            height: 720px;
             position: relative;
-            overflow: hidden;
-            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)),
-                        url('https://picsum.photos/seed/memory-alignment-cpu-instruction/1280/720.jpg');
+            background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95)),
+                        url('https://picsum.photos/seed/pcie-bus-traffic/1280/720.jpg');
             background-size: cover;
-            background-position: center;
             display: flex;
             flex-direction: column;
+            padding: 40px 80px;
+            box-sizing: border-box;
         }
         .header {
-            padding: 40px 70px 20px;
+            margin-bottom: 20px;
         }
         .title {
-            font-size: 40px;
+            font-size: 48px;
             font-weight: 700;
             color: #ffffff;
-            margin-bottom: 10px;
-            position: relative;
+            border-bottom: 4px solid #ff4d4d;
             display: inline-block;
-        }
-        .title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background-color: #ff4d4d;
+            padding-bottom: 10px;
         }
         .content {
-            flex-grow: 1;
             display: flex;
-            padding: 20px 70px 50px;
+            flex: 1;
+            gap: 50px;
+            margin-top: 20px;
         }
+
+        /* SECTION GAUCHE (TEXTE) */
         .left-section {
             flex: 1;
-            padding-right: 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        .right-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .technique {
+        .text-block {
             background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 30px;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
         }
-        .section-title {
+        .block-title {
             font-size: 28px;
             font-weight: 600;
             color: #a7c7ff;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
         }
-        .section-icon {
+        .block-title i {
             margin-right: 15px;
             color: #a7c7ff;
         }
-        .technique-desc {
-            font-size: 20px;
+        .block-text {
+            font-size: 22px;
             line-height: 1.5;
         }
         .highlight {
             color: #ff4d4d;
-            font-weight: 600;
+            font-weight: 700;
         }
-        .result {
-            background-color: rgba(255, 77, 77, 0.1);
-            border-radius: 10px;
-            padding: 30px;
-            border-left: 4px solid #ff4d4d;
-        }
-        .visual-container {
-            width: 100%;
-            height: 450px;
-            position: relative;
+
+        /* SECTION DROITE (VISUEL ANIMÉ) */
+        .right-section {
+            flex: 1;
+            background-color: rgba(10, 14, 39, 0.6);
+            border-radius: 20px;
+            border: 1px solid rgba(167, 199, 255, 0.2);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-        }
-        .memory-layout {
-            width: 100%;
-            height: 180px;
             position: relative;
+        }
+
+        /* Animation Bus */
+        .bus-lane {
+            width: 90%;
+            height: 100px;
+            border-top: 4px dashed #555;
+            border-bottom: 4px dashed #555;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
             margin-bottom: 40px;
         }
-        .memory-block {
+        .bus-label {
             position: absolute;
-            height: 80px;
+            top: -30px;
+            left: 0;
+            color: #a7c7ff;
+            font-weight: bold;
+        }
+        .packets {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            gap: 5px;
+            animation: flow 2s linear infinite;
+        }
+        .micro-packet {
+            width: 15px;
+            height: 60px;
+            background-color: #ff4d4d;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.6);
+        }
+
+        /* Compteur */
+        .counter-box {
+            background-color: #ff4d4d;
+            padding: 20px 40px;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 77, 77, 0.4);
+        }
+        .counter-val {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .counter-label {
             font-size: 18px;
             font-weight: 600;
-            border-radius: 8px;
-            top: 50px;
+            text-transform: uppercase;
         }
-        .valid-memory {
-            left: 0;
-            width: 60%;
-            background-color: rgba(167, 199, 255, 0.2);
-            border: 1px solid #a7c7ff;
-            z-index: 1;
-        }
-        .invalid-memory {
-            left: 50%;
-            width: 50%;
-            background-color: rgba(255, 77, 77, 0.2);
-            border: 1px solid #ff4d4d;
-            z-index: 1;
-        }
-        .memory-label {
-            position: absolute;
-            top: 20px;
-            font-size: 16px;
-            color: #a7c7ff;
-        }
-        .invalid-label {
-            color: #ff4d4d;
-            left: 65%;
-        }
-        .unaligned-access {
-            position: absolute;
-            top: 30px;
-            left: 30%;
-            width: 40%;
-            height: 120px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 2px dashed #ffffff;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-        }
-        .access-label {
-            font-size: 16px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 10px;
-        }
-        .access-size {
-            font-size: 24px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-        .cpu-process {
-            width: 100%;
-            background-color: rgba(10, 14, 39, 0.7);
-            border-radius: 10px;
-            padding: 20px;
-            position: relative;
-        }
-        .process-title {
-            font-size: 22px;
-            font-weight: 600;
-            color: #a7c7ff;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .process-steps {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .process-step {
-            width: 23%;
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        .step-icon {
-            font-size: 36px;
-            color: #a7c7ff;
-            margin-bottom: 10px;
-        }
-        .step-text {
-            font-size: 16px;
-            line-height: 1.3;
-        }
-        .delay-result {
-            width: 100%;
-            margin-top: 30px;
-            background-color: rgba(255, 77, 77, 0.1);
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .delay-value {
-            font-size: 48px;
-            font-weight: 700;
-            color: #ff4d4d;
-            margin-right: 15px;
-        }
-        .delay-label {
-            font-size: 20px;
-            color: #ffffff;
+
+        @keyframes flow {
+            0% { transform: translateX(-50px); }
+            100% { transform: translateX(50px); }
         }
     </style>
 </head>
 <body>
     <div class="slide">
         <div class="header">
-            <h1 class="title">Le Générateur de Délai : L'Accès Mémoire "Sale"</h1>
+            <h1 class="title">LA SOLUTION (PCIE)</h1>
         </div>
+
         <div class="content">
             <div class="left-section">
-                <div class="technique">
-                    <div class="section-title">
-                        <i class="material-icons section-icon">code</i>
-                        L'Instruction Magique
+                <div class="text-block">
+                    <div class="block-title">
+                        <i class="material-icons">vpn_key</i>
+                        Le Secret
                     </div>
-                    <div class="technique-desc">
-                        <div>• Violer <span class="highlight">délibérément</span> les spécifications du CPU</div>
-                        <div>• Utiliser un accès mémoire de <span class="highlight">8 octets non aligné</span></div>
-                        <div>• L'adresse chevauche une zone mémoire valide et une adresse invalide</div>
+                    <div class="block-text">
+                        En forçant une transaction complètement <span class="highlight">non-alignée</span>, nous obligeons le contrôleur mémoire à découper notre instruction en <strong>micro-morceaux</strong>.
                     </div>
                 </div>
-                <div class="result">
-                    <div class="section-title">
-                        <i class="material-icons section-icon">timer</i>
-                        Le Résultat
+
+                <div class="text-block" style="border-left: 4px solid #ff4d4d;">
+                    <div class="block-title">
+                        <i class="material-icons" style="color: #ff4d4d;">timer</i>
+                        La Mèche Allumée
                     </div>
-                    <div class="technique-desc">
-                        <div>• Le CPU décompose l'instruction "sale" en plusieurs <span class="highlight">micro-opérations complexes</span></div>
-                        <div>• Ce processus prend du temps</div>
-                        <div>• Crée un délai <span class="highlight">parfait et reproductible</span> de 12 000 cycles</div>
-                        <div>• L'erreur n'est déclenchée qu'après ce délai</div>
+                    <div class="block-text">
+                        Cette saturation artificielle du bus transforme notre erreur rapide de 700 cycles en une attaque temporisée de <strong>12 000 cycles</strong>.
                     </div>
                 </div>
             </div>
+
             <div class="right-section">
-                <div class="visual-container">
-                    <div class="memory-layout">
-                        <div class="memory-label">Mémoire Valide</div>
-                        <div class="memory-label invalid-label">Adresse Invalide (PCIe)</div>
-
-                        <div class="memory-block valid-memory">Zone mémoire valide</div>
-                        <div class="memory-block invalid-memory">Périphérique PCIe inexistant</div>
-
-                        <div class="unaligned-access">
-                            <div class="access-label">Accès non-aligné</div>
-                            <div class="access-size">8 octets</div>
-                        </div>
+                <div class="bus-lane">
+                    <div class="bus-label">BUS PCIe SATURÉ</div>
+                    <div class="packets">
+                        <div class="micro-packet"></div><div class="micro-packet"></div><div class="micro-packet"></div>
+                        <div class="micro-packet"></div><div class="micro-packet"></div><div class="micro-packet"></div>
+                        <div class="micro-packet"></div><div class="micro-packet"></div><div class="micro-packet"></div>
+                        <div class="micro-packet"></div><div class="micro-packet"></div><div class="micro-packet"></div>
+                        <div class="micro-packet"></div><div class="micro-packet"></div><div class="micro-packet"></div>
+                        <div class="micro-packet"></div><div class="micro-packet"></div><div class="micro-packet"></div>
                     </div>
+                </div>
 
-                    <div class="cpu-process">
-                        <div class="process-title">Réaction du CPU</div>
-
-                        <div class="process-steps">
-                            <div class="process-step">
-                                <i class="material-icons step-icon">search</i>
-                                <div class="step-text">Détection de l'accès non-aligné</div>
-                            </div>
-                            <div class="process-step">
-                                <i class="material-icons step-icon">call_split</i>
-                                <div class="step-text">Décomposition en micro-opérations</div>
-                            </div>
-                            <div class="process-step">
-                                <i class="material-icons step-icon">settings</i>
-                                <div class="step-text">Traitement complexe de l'instruction</div>
-                            </div>
-                            <div class="process-step">
-                                <i class="material-icons step-icon">error</i>
-                                <div class="step-text">Déclenchement de la MCE</div>
-                            </div>
-                        </div>
-
-                        <div class="delay-result">
-                            <div class="delay-value">12 000</div>
-                            <div class="delay-label">cycles CPU de délai</div>
-                        </div>
-                    </div>
+                <div class="counter-box">
+                    <div class="counter-val">12 000</div>
+                    <div class="counter-label">Cycles de Délai</div>
                 </div>
             </div>
         </div>
     </div>
-  <script>
+
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- PARTIE 1 : AUTO-ZOOM (ADAPTATION ÉCRAN) ---
+        // --- PARTIE 1 : AUTO-ZOOM ---
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
-
-            // Vos dimensions originales
             const baseWidth = 1280;
             const baseHeight = 720;
-
-            // Dimensions de la fenêtre actuelle
             const winWidth = window.innerWidth;
             const winHeight = window.innerHeight;
-
-            // Calcul du ratio pour que tout rentre sans déborder
             const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
-
-            // Application du zoom
             slide.style.transform = `scale(${scale})`;
-
-            // On force le centrage et le fond noir via JS pour ne pas toucher votre CSS
             document.body.style.height = '100vh';
             document.body.style.margin = '0';
             document.body.style.display = 'flex';
             document.body.style.justifyContent = 'center';
             document.body.style.alignItems = 'center';
-            document.body.style.overflow = 'hidden'; // Stop les scrollbars
-            document.body.style.backgroundColor = '#000'; // Bandes noires cinémas
+            document.body.style.backgroundColor = '#000';
         }
-
-        // Lancer au chargement et si on redimensionne la fenêtre
         fitSlide();
         window.addEventListener('resize', fitSlide);
-
 
         // --- PARTIE 2 : NAVIGATION ---
         const slides = [
@@ -354,10 +226,9 @@
             '5.html', '6.html', '7.html', '8.html',
             '9.html', '10.html'
         ];
-
         const path = window.location.pathname;
         const page = path.split("/").pop() || 'index.html';
-        const currentIndex = slides.indexOf(decodeURIComponent(page)); // decode pour gérer les %20 éventuels
+        const currentIndex = slides.indexOf(decodeURIComponent(page));
 
         function goToSlide(direction) {
             let nextIndex = currentIndex + direction;
@@ -371,19 +242,17 @@
             if (e.key === 'ArrowLeft') goToSlide(-1);
         });
 
-        // Zones de clic invisibles (Gauche/Droite)
+        // Zones tactiles invisibles
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
         const leftZone = document.createElement('div');
         leftZone.style.cssText = navStyle + "left:0;";
         leftZone.onclick = () => goToSlide(-1);
-
         const rightZone = document.createElement('div');
         rightZone.style.cssText = navStyle + "right:0;";
         rightZone.onclick = () => goToSlide(1);
-
         document.body.appendChild(leftZone);
         document.body.appendChild(rightZone);
     });
-</script>
+    </script>
 </body>
 </html>
