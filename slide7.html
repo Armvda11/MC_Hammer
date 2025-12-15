@@ -197,10 +197,9 @@
             </div>
         </div>
     </div>
-
-    <script>
+<script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- PARTIE 1 : AUTO-ZOOM ---
+        // --- 1. AUTO-ZOOM ---
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
@@ -215,19 +214,29 @@
             document.body.style.display = 'flex';
             document.body.style.justifyContent = 'center';
             document.body.style.alignItems = 'center';
+            document.body.style.overflow = 'hidden';
             document.body.style.backgroundColor = '#000';
         }
         fitSlide();
         window.addEventListener('resize', fitSlide);
 
-        // --- PARTIE 2 : NAVIGATION ---
-            const slides = [
-            'slide1.html', 'slide2.html', 'slide3.html', 'slide4.html',
-            'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html',
-            'slide9.html', 'slide10.html'
+        // --- 2. NAVIGATION (11 SLIDES) ---
+        const slides = [
+            'slide1.html',  // Intro
+            'slide2.html',  // Cible SMM
+            'slide3.html',  // Arme MCE
+            'slide4.html',  // Brèche (Votre slide bonus)
+            'slide5.html',  // Forge
+            'slide6.html',  // Problème Timing
+            'slide7.html',  // Solution PCIe
+            'slide8.html',  // Fenêtre de Tir (Nouvelle)
+            'slide9.html',  // Attaque Cross-Core
+            'slide10.html', // Impact
+            'slide11.html'  // Conclusion
         ];
+
         const path = window.location.pathname;
-        const page = path.split("/").pop() || 'index.html';
+        const page = path.split("/").pop() || 'slide1.html';
         const currentIndex = slides.indexOf(decodeURIComponent(page));
 
         function goToSlide(direction) {
@@ -242,17 +251,18 @@
             if (e.key === 'ArrowLeft') goToSlide(-1);
         });
 
-        // Zones tactiles invisibles
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
         const leftZone = document.createElement('div');
         leftZone.style.cssText = navStyle + "left:0;";
         leftZone.onclick = () => goToSlide(-1);
+
         const rightZone = document.createElement('div');
         rightZone.style.cssText = navStyle + "right:0;";
         rightZone.onclick = () => goToSlide(1);
+
         document.body.appendChild(leftZone);
         document.body.appendChild(rightZone);
     });
-    </script>
+</script>
 </body>
 </html>

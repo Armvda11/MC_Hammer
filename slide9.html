@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Une Fois le SMM Contrôlé...</title>
+    <title>L'Impact : Le Marteau Frappe le Clou</title>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
@@ -23,7 +23,7 @@
             position: relative;
             overflow: hidden;
             background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)),
-                        url('https://picsum.photos/seed/cybersecurity-system-control-hack/1280/720.jpg');
+                        url('https://picsum.photos/seed/cyberattack-exploit-chain/1280/720.jpg');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -52,55 +52,65 @@
         .content {
             flex-grow: 1;
             display: flex;
+            flex-direction: column;
             padding: 20px 70px 50px;
         }
-        .left-section {
+        .phases-container {
+            display: flex;
+            flex-grow: 1;
+            margin-bottom: 30px;
+        }
+        .phase {
             flex: 1;
-            padding-right: 40px;
+            padding: 0 15px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
         }
-        .right-section {
-            flex: 1;
+        .phase-header {
+            background-color: rgba(167, 199, 255, 0.2);
+            border-radius: 10px 10px 0 0;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .phase-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ff4d4d;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .impact-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-gap: 25px;
-        }
-        .impact-card {
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 10px;
-            padding: 25px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s;
-        }
-        .impact-card:hover {
-            transform: translateY(-5px);
-            background-color: rgba(167, 199, 255, 0.15);
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .card-icon {
-            font-size: 36px;
-            color: #ff4d4d;
+            font-size: 20px;
+            font-weight: 700;
             margin-right: 15px;
         }
-        .card-title {
+        .phase-title {
             font-size: 24px;
             font-weight: 600;
             color: #a7c7ff;
         }
-        .card-content {
+        .phase-content {
+            background-color: rgba(10, 14, 39, 0.7);
+            border-radius: 0 0 10px 10px;
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .phase-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .phase-icon {
+            color: #a7c7ff;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .phase-text {
             font-size: 20px;
             line-height: 1.4;
         }
@@ -108,269 +118,223 @@
             color: #ff4d4d;
             font-weight: 600;
         }
-        .visual-container {
-            width: 100%;
-            height: 450px;
-            background-color: rgba(10, 14, 39, 0.7);
+        .impact-container {
+            background-color: rgba(255, 77, 77, 0.1);
             border-radius: 10px;
-            padding: 30px;
+            padding: 25px;
+            border-left: 4px solid #ff4d4d;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            position: relative;
         }
-        .system-control {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .control-icon {
-            font-size: 80px;
+        .impact-icon {
+            font-size: 60px;
             color: #ff4d4d;
-            margin-bottom: 20px;
+            margin-right: 30px;
         }
-        .control-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .privilege-level {
-            position: absolute;
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 77, 77, 0.2);
-            border: 2px solid #ff4d4d;
-            z-index: 2;
-        }
-        .privilege-icon {
-            font-size: 40px;
-            color: #ff4d4d;
-            margin-bottom: 10px;
-        }
-        .privilege-label {
-            font-size: 20px;
+        .impact-text {
+            font-size: 24px;
             font-weight: 600;
-            color: #ff4d4d;
-            text-align: center;
+            line-height: 1.4;
         }
-        .privilege-ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px dashed rgba(167, 199, 255, 0.3);
-        }
-        .ring-3 {
-            width: 300px;
-            height: 300px;
-        }
-        .ring-0 {
-            width: 240px;
-            height: 240px;
-        }
-        .ring-1 {
-            width: 180px;
-            height: 180px;
-        }
-        .ring-2 {
-            width: 120px;
-            height: 120px;
-            border-color: rgba(255, 77, 77, 0.3);
-        }
-        .ring-label {
-            position: absolute;
-            font-size: 16px;
-            color: rgba(167, 199, 255, 0.7);
-        }
-        .ring-3-label {
-            top: 50px;
-            right: 50px;
-        }
-        .ring-0-label {
-            top: 100px;
-            right: 100px;
-        }
-        .ring-1-label {
-            top: 150px;
-            right: 150px;
-        }
-        .ring-2-label {
-            top: 200px;
-            right: 200px;
-            color: rgba(255, 77, 77, 0.7);
-        }
-        .capabilities {
-            margin-top: 30px;
-            width: 100%;
+        .core-visual {
             display: flex;
             justify-content: space-between;
+            margin-top: 15px;
         }
-        .capability {
-            width: 30%;
+        .core {
+            width: 45%;
             background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+        .core-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .core-icon {
+            margin-right: 8px;
+            color: #a7c7ff;
+        }
+        .attacker-core .core-title {
+            color: #ff4d4d;
+        }
+        .attacker-core .core-icon {
+            color: #ff4d4d;
+        }
+        .core-desc {
+            font-size: 18px;
             text-align: center;
         }
-        .capability-icon {
-            font-size: 30px;
-            color: #a7c7ff;
-            margin-bottom: 10px;
-        }
-        .capability-text {
+        .core-action {
+            margin-top: 10px;
+            padding: 8px 15px;
+            border-radius: 20px;
             font-size: 16px;
-            line-height: 1.3;
+            font-weight: 600;
+        }
+        .attacker-action {
+            background-color: rgba(255, 77, 77, 0.2);
+            color: #ff4d4d;
+        }
+        .victim-action {
+            background-color: rgba(167, 199, 255, 0.2);
+            color: #a7c7ff;
         }
     </style>
 </head>
 <body>
     <div class="slide">
         <div class="header">
-            <h1 class="title">Une Fois le SMM Contrôlé...</h1>
+            <h1 class="title">L'Impact : Le Marteau Frappe le Clou</h1>
         </div>
         <div class="content">
-            <div class="left-section">
-                <div class="impact-grid">
-                    <div class="impact-card">
-                        <div class="card-header">
-                            <i class="material-icons card-icon">admin_panel_settings</i>
-                            <div class="card-title">Contrôle Total</div>
+            <div class="phases-container">
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">1</div>
+                        <div class="phase-title">Préparation</div>
+                    </div>
+                    <div class="phase-content">
+                        <div class="phase-item">
+                            <i class="material-icons phase-icon">build</i>
+                            <div class="phase-text">
+                                <span class="highlight">Empoisonnement</span> du Northbridge
+                            </div>
                         </div>
-                        <div class="card-content">
-                            L'attaquant devient <span class="highlight">"Dieu"</span> sur le système
+                        <div class="phase-item">
+                            <i class="material-icons phase-icon">table_chart</i>
+                            <div class="phase-text">
+                                Préparation d'une <span class="highlight">fausse IDT</span>
+                            </div>
+                        </div>
+                        <div class="phase-item">
+                            <i class="material-icons phase-icon">code</i>
+                            <div class="phase-text">
+                                Pointe vers le code malveillant
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="impact-card">
-                        <div class="card-header">
-                            <i class="material-icons card-icon">lock_open</i>
-                            <div class="card-title">Vol de Secrets</div>
-                        </div>
-                        <div class="card-content">
-                            Lecture de la <span class="highlight">SMRAM</span> pour dérober clés de chiffrement et mots de passe
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">2</div>
+                        <div class="phase-title">Lancement</div>
+                    </div>
+                    <div class="phase-content">
+                        <div class="core-visual">
+                            <div class="core attacker-core">
+                                <div class="core-title">
+                                    <i class="material-icons core-icon">memory</i>
+                                    Cœur 1 (Attaquant)
+                                </div>
+                                <div class="core-desc">
+                                    Lance l'instruction "fusible"
+                                </div>
+                                <div class="core-action attacker-action">
+                                    Accès mémoire non-aligné
+                                </div>
+                            </div>
+
+                            <div class="core victim-core">
+                                <div class="core-title">
+                                    <i class="material-icons core-icon">memory</i>
+                                    Cœur 0 (Victime)
+                                </div>
+                                <div class="core-desc">
+                                    Forcé d'entrer en SMM
+                                </div>
+                                <div class="core-action victim-action">
+                                    Entrée en mode privilégié
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="impact-card">
-                        <div class="card-header">
-                            <i class="material-icons card-icon">save</i>
-                            <div class="card-title">Persistance Ultime</div>
-                        </div>
-                        <div class="card-content">
-                            Accès en écriture au <span class="highlight">Flash SPI</span> (BIOS/UEFI)
-                        </div>
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">3</div>
+                        <div class="phase-title">Impact</div>
                     </div>
-
-                    <div class="impact-card">
-                        <div class="card-header">
-                            <i class="material-icons card-icon">visibility_off</i>
-                            <div class="card-title">Furtivité</div>
+                    <div class="phase-content">
+                        <div class="phase-item">
+                            <i class="material-icons phase-icon">timer</i>
+                            <div class="phase-text">
+                                Après <span class="highlight">12 000 cycles</span>, la MCE frappe
+                            </div>
                         </div>
-                        <div class="card-content">
-                            Invisible pour l'antivirus et le système d'exploitation
+                        <div class="phase-item">
+                            <i class="material-icons phase-icon">security</i>
+                            <div class="phase-text">
+                                Le Cœur 0 est en SMM avec l'IDT malveillante
+                            </div>
+                        </div>
+                        <div class="phase-item">
+                            <i class="material-icons phase-icon">verified_user</i>
+                            <div class="phase-text">
+                                Le code s'exécute avec les privilèges du <span class="highlight">Ring -2</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="right-section">
-                <div class="visual-container">
-                    <div class="system-control">
-                        <i class="material-icons control-icon">security</i>
-                        <div class="control-title">Privilèges Absolus</div>
-
-                        <div class="privilege-level">
-                            <i class="material-icons privilege-icon">verified_user</i>
-                            <div class="privilege-label">SMM</div>
-                        </div>
-
-                        <div class="privilege-ring ring-3"></div>
-                        <div class="privilege-ring ring-0"></div>
-                        <div class="privilege-ring ring-1"></div>
-                        <div class="privilege-ring ring-2"></div>
-
-                        <div class="ring-label ring-3-label">Applications (Ring 3)</div>
-                        <div class="ring-label ring-0-label">Noyau (Ring 0)</div>
-                        <div class="ring-label ring-1-label">Hyperviseur (Ring -1)</div>
-                        <div class="ring-label ring-2-label">SMM (Ring -2)</div>
-
-                        <div class="capabilities">
-                            <div class="capability">
-                                <i class="material-icons capability-icon">flash_on</i>
-                                <div class="capability-text">Survit au formatage</div>
-                            </div>
-                            <div class="capability">
-                                <i class="material-icons capability-icon">vpn_key</i>
-                                <div class="capability-text">Accès au firmware</div>
-                            </div>
-                            <div class="capability">
-                                <i class="material-icons capability-icon">update</i>
-                                <div class="capability-text">Persiste après réinstallation</div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="impact-container">
+                <i class="material-icons impact-icon">gavel</i>
+                <div class="impact-text">
+                    La forteresse SMM est compromise : l'attaquant obtient un <span class="highlight">contrôle absolu</span> sur le système
                 </div>
             </div>
         </div>
     </div>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- PARTIE 1 : AUTO-ZOOM (ADAPTATION ÉCRAN) ---
+        // --- 1. AUTO-ZOOM ---
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
-
-            // Vos dimensions originales
             const baseWidth = 1280;
             const baseHeight = 720;
-
-            // Dimensions de la fenêtre actuelle
             const winWidth = window.innerWidth;
             const winHeight = window.innerHeight;
-
-            // Calcul du ratio pour que tout rentre sans déborder
             const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
-
-            // Application du zoom
             slide.style.transform = `scale(${scale})`;
-
-            // On force le centrage et le fond noir via JS pour ne pas toucher votre CSS
             document.body.style.height = '100vh';
             document.body.style.margin = '0';
             document.body.style.display = 'flex';
             document.body.style.justifyContent = 'center';
             document.body.style.alignItems = 'center';
-            document.body.style.overflow = 'hidden'; // Stop les scrollbars
-            document.body.style.backgroundColor = '#000'; // Bandes noires cinémas
+            document.body.style.overflow = 'hidden';
+            document.body.style.backgroundColor = '#000';
         }
-
-        // Lancer au chargement et si on redimensionne la fenêtre
         fitSlide();
         window.addEventListener('resize', fitSlide);
 
-
-        // --- PARTIE 2 : NAVIGATION ---
-              const slides = [
-            'slide1.html', 'slide2.html', 'slide3.html', 'slide4.html',
-            'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html',
-            'slide9.html', 'slide10.html'
+        // --- 2. NAVIGATION (11 SLIDES) ---
+        const slides = [
+            'slide1.html',  // Intro
+            'slide2.html',  // Cible SMM
+            'slide3.html',  // Arme MCE
+            'slide4.html',  // Brèche (Votre slide bonus)
+            'slide5.html',  // Forge
+            'slide6.html',  // Problème Timing
+            'slide7.html',  // Solution PCIe
+            'slide8.html',  // Fenêtre de Tir (Nouvelle)
+            'slide9.html',  // Attaque Cross-Core
+            'slide10.html', // Impact
+            'slide11.html'  // Conclusion
         ];
 
         const path = window.location.pathname;
-        const page = path.split("/").pop() || 'index.html';
-        const currentIndex = slides.indexOf(decodeURIComponent(page)); // decode pour gérer les %20 éventuels
+        const page = path.split("/").pop() || 'slide1.html';
+        const currentIndex = slides.indexOf(decodeURIComponent(page));
 
         function goToSlide(direction) {
             let nextIndex = currentIndex + direction;
@@ -384,7 +348,6 @@
             if (e.key === 'ArrowLeft') goToSlide(-1);
         });
 
-        // Zones de clic invisibles (Gauche/Droite)
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
         const leftZone = document.createElement('div');
         leftZone.style.cssText = navStyle + "left:0;";

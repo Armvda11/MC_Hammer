@@ -342,51 +342,47 @@
         </div>
     </div>
 
-   <script>
+<script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- PARTIE 1 : AUTO-ZOOM (ADAPTATION ÉCRAN) ---
+        // --- 1. AUTO-ZOOM ---
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
-
-            // Vos dimensions originales
             const baseWidth = 1280;
             const baseHeight = 720;
-
-            // Dimensions de la fenêtre actuelle
             const winWidth = window.innerWidth;
             const winHeight = window.innerHeight;
-
-            // Calcul du ratio pour que tout rentre sans déborder
             const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
-
-            // Application du zoom
             slide.style.transform = `scale(${scale})`;
-
-            // On force le centrage et le fond noir via JS pour ne pas toucher votre CSS
             document.body.style.height = '100vh';
             document.body.style.margin = '0';
             document.body.style.display = 'flex';
             document.body.style.justifyContent = 'center';
             document.body.style.alignItems = 'center';
-            document.body.style.overflow = 'hidden'; // Stop les scrollbars
-            document.body.style.backgroundColor = '#000'; // Bandes noires cinémas
+            document.body.style.overflow = 'hidden';
+            document.body.style.backgroundColor = '#000';
         }
-
-        // Lancer au chargement et si on redimensionne la fenêtre
         fitSlide();
         window.addEventListener('resize', fitSlide);
 
-
-        // --- PARTIE 2 : NAVIGATION ---
+        // --- 2. NAVIGATION (11 SLIDES) ---
         const slides = [
-            'slide1.html', 'slide2.html', 'slide3.html', 'slide4.html',
-            'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html',
-            'slide9.html', 'slide10.html'
+            'slide1.html',  // Intro
+            'slide2.html',  // Cible SMM
+            'slide3.html',  // Arme MCE
+            'slide4.html',  // Brèche (Votre slide bonus)
+            'slide5.html',  // Forge
+            'slide6.html',  // Problème Timing
+            'slide7.html',  // Solution PCIe
+            'slide8.html',  // Fenêtre de Tir (Nouvelle)
+            'slide9.html',  // Attaque Cross-Core
+            'slide10.html', // Impact
+            'slide11.html'  // Conclusion
         ];
+
         const path = window.location.pathname;
-        const page = path.split("/").pop() || 'index.html';
-        const currentIndex = slides.indexOf(decodeURIComponent(page)); // decode pour gérer les %20 éventuels
+        const page = path.split("/").pop() || 'slide1.html';
+        const currentIndex = slides.indexOf(decodeURIComponent(page));
 
         function goToSlide(direction) {
             let nextIndex = currentIndex + direction;
@@ -400,7 +396,6 @@
             if (e.key === 'ArrowLeft') goToSlide(-1);
         });
 
-        // Zones de clic invisibles (Gauche/Droite)
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
         const leftZone = document.createElement('div');
         leftZone.style.cssText = navStyle + "left:0;";
