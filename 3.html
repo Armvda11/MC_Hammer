@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Une Brèche dans le Modèle de Défense</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #0a0e27;
+            color: #ffffff;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)),
+                        url('https://picsum.photos/seed/cybersecurity-breach-defense/1280/720.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background-color: #ff4d4d;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            padding: 20px 70px 50px;
+        }
+        .left-section {
+            flex: 1;
+            padding-right: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .right-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .defense-model {
+            background-color: rgba(167, 199, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .model-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #a7c7ff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .model-icon {
+            margin-right: 15px;
+            color: #a7c7ff;
+        }
+        .model-desc {
+            font-size: 20px;
+            line-height: 1.4;
+        }
+        .attack-hypothesis {
+            background-color: rgba(255, 77, 77, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            border-left: 4px solid #ff4d4d;
+        }
+        .hypothesis-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ff4d4d;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .hypothesis-icon {
+            margin-right: 15px;
+            color: #ff4d4d;
+        }
+        .hypothesis-desc {
+            font-size: 20px;
+            line-height: 1.4;
+        }
+        .highlight {
+            color: #ff4d4d;
+            font-weight: 600;
+        }
+        .visual-container {
+            width: 100%;
+            height: 450px;
+            position: relative;
+        }
+        .cpu-shield {
+            width: 220px;
+            height: 220px;
+            background-color: rgba(167, 199, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+        .cpu-icon {
+            font-size: 100px;
+            color: #a7c7ff;
+        }
+        .shield-icon {
+            position: absolute;
+            font-size: 140px;
+            color: rgba(167, 199, 255, 0.3);
+        }
+        .attack-vector {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background-color: rgba(255, 77, 77, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            animation: pulse 2s infinite;
+        }
+        .attack-icon {
+            font-size: 60px;
+            color: #ff4d4d;
+            margin-bottom: 10px;
+        }
+        .attack-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ff4d4d;
+            text-align: center;
+        }
+        .attack-1 {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .attack-2 {
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+        .attack-3 {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .attack-4 {
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+        .arrow {
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background-color: rgba(255, 77, 77, 0.5);
+            z-index: 1;
+        }
+        .arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -6px;
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 12px solid rgba(255, 77, 77, 0.5);
+        }
+        .arrow-1 {
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%) rotate(90deg);
+        }
+        .arrow-2 {
+            top: 50%;
+            right: 120px;
+            transform: translateY(-50%) rotate(180deg);
+        }
+        .arrow-3 {
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%) rotate(270deg);
+        }
+        .arrow-4 {
+            top: 50%;
+            left: 120px;
+            transform: translateY(-50%);
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">Une Brèche dans le Modèle de Défense</h1>
+        </div>
+        <div class="content">
+            <div class="left-section">
+                <div class="defense-model">
+                    <div class="model-title">
+                        <i class="material-icons model-icon">security</i>
+                        Modèle de Défense Actuel
+                    </div>
+                    <div class="model-desc">
+                        <div>La "Suppression d'Interruptions"</div>
+                        <div>Code critique (cryptographie, noyau)</div>
+                        <div>→ Bloque les interruptions</div>
+                        <div>→ Évite les perturbations</div>
+                    </div>
+                </div>
+                <div class="attack-hypothesis">
+                    <div class="hypothesis-title">
+                        <i class="material-icons hypothesis-icon">gavel</i>
+                        Hypothèse de l'Attaque
+                    </div>
+                    <div class="hypothesis-desc">
+                        <div>Si un attaquant peut générer une <span class="highlight">MCE à la demande</span></div>
+                        <div>→ Possède un <span class="highlight">"marteau"</span> capable d'interrompre n'importe quel code</div>
+                        <div>→ Le CPU ne peut pas la bloquer</div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-section">
+                <div class="visual-container">
+                    <div class="cpu-shield">
+                        <i class="material-icons shield-icon">shield</i>
+                        <i class="material-icons cpu-icon">memory</i>
+                    </div>
+
+                    <div class="attack-vector attack-1">
+                        <i class="material-icons attack-icon">priority_high</i>
+                        <div class="attack-text">MCE</div>
+                    </div>
+                    <div class="attack-vector attack-2">
+                        <i class="material-icons attack-icon">priority_high</i>
+                        <div class="attack-text">MCE</div>
+                    </div>
+                    <div class="attack-vector attack-3">
+                        <i class="material-icons attack-icon">priority_high</i>
+                        <div class="attack-text">MCE</div>
+                    </div>
+                    <div class="attack-vector attack-4">
+                        <i class="material-icons attack-icon">priority_high</i>
+                        <div class="attack-text">MCE</div>
+                    </div>
+
+                    <div class="arrow arrow-1"></div>
+                    <div class="arrow arrow-2"></div>
+                    <div class="arrow arrow-3"></div>
+                    <div class="arrow arrow-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- PARTIE 1 : AUTO-ZOOM (ADAPTATION ÉCRAN) ---
+        function fitSlide() {
+            const slide = document.querySelector('.slide');
+            if (!slide) return;
+
+            // Vos dimensions originales
+            const baseWidth = 1280;
+            const baseHeight = 720;
+
+            // Dimensions de la fenêtre actuelle
+            const winWidth = window.innerWidth;
+            const winHeight = window.innerHeight;
+
+            // Calcul du ratio pour que tout rentre sans déborder
+            const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
+
+            // Application du zoom
+            slide.style.transform = `scale(${scale})`;
+
+            // On force le centrage et le fond noir via JS pour ne pas toucher votre CSS
+            document.body.style.height = '100vh';
+            document.body.style.margin = '0';
+            document.body.style.display = 'flex';
+            document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center';
+            document.body.style.overflow = 'hidden'; // Stop les scrollbars
+            document.body.style.backgroundColor = '#000'; // Bandes noires cinémas
+        }
+
+        // Lancer au chargement et si on redimensionne la fenêtre
+        fitSlide();
+        window.addEventListener('resize', fitSlide);
+
+
+        // --- PARTIE 2 : NAVIGATION ---
+        const slides = [
+            'index.html', '2.html', '3.html', '4.html',
+            '5.html', '6.html', '7.html', '8.html',
+            '9.html', '10.html'
+        ];
+
+        const path = window.location.pathname;
+        const page = path.split("/").pop() || 'index.html';
+        const currentIndex = slides.indexOf(decodeURIComponent(page)); // decode pour gérer les %20 éventuels
+
+        function goToSlide(direction) {
+            let nextIndex = currentIndex + direction;
+            if (nextIndex >= 0 && nextIndex < slides.length) {
+                window.location.href = slides[nextIndex];
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (['ArrowRight', ' ', 'Enter'].includes(e.key)) goToSlide(1);
+            if (e.key === 'ArrowLeft') goToSlide(-1);
+        });
+
+        // Zones de clic invisibles (Gauche/Droite)
+        const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
+        const leftZone = document.createElement('div');
+        leftZone.style.cssText = navStyle + "left:0;";
+        leftZone.onclick = () => goToSlide(-1);
+
+        const rightZone = document.createElement('div');
+        rightZone.style.cssText = navStyle + "right:0;";
+        rightZone.onclick = () => goToSlide(1);
+
+        document.body.appendChild(leftZone);
+        document.body.appendChild(rightZone);
+    });
+</script>
+</body>
+</html>

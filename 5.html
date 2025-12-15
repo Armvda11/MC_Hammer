@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title></title><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viser le Cœur du Système : Le SMM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #0a0e27;
+            color: #ffffff;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)),
+                        url('https://picsum.photos/seed/system-management-mode-security/1280/720.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background-color: #ff4d4d;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            padding: 20px 70px 50px;
+        }
+        .left-section {
+            flex: 1;
+            padding-right: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .right-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .smm-description {
+            background-color: rgba(167, 199, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #a7c7ff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .section-icon {
+            margin-right: 15px;
+            color: #a7c7ff;
+        }
+        .description-content {
+            font-size: 20px;
+            line-height: 1.5;
+        }
+        .highlight {
+            color: #ff4d4d;
+            font-weight: 600;
+        }
+        .vulnerability {
+            background-color: rgba(255, 77, 77, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            border-left: 4px solid #ff4d4d;
+        }
+        .visual-container {
+            width: 100%;
+            height: 450px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .privilege-levels {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .level {
+            position: absolute;
+            width: 100%;
+            height: 60px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 20px;
+            font-weight: 600;
+            left: 0;
+        }
+        .level-ring3 {
+            top: 180px;
+            background-color: rgba(167, 199, 255, 0.2);
+            border: 1px solid #a7c7ff;
+            z-index: 1;
+        }
+        .level-ring0 {
+            top: 120px;
+            background-color: rgba(167, 199, 255, 0.3);
+            border: 1px solid #a7c7ff;
+            z-index: 2;
+        }
+        .level-ring-1 {
+            top: 60px;
+            background-color: rgba(167, 199, 255, 0.4);
+            border: 1px solid #a7c7ff;
+            z-index: 3;
+        }
+        .level-ring-2 {
+            top: 0;
+            background-color: rgba(255, 77, 77, 0.3);
+            border: 2px solid #ff4d4d;
+            z-index: 4;
+        }
+        .level-label {
+            margin-left: 20px;
+            color: #ffffff;
+        }
+        .level-name {
+            flex-grow: 1;
+        }
+        .smm-highlight {
+            color: #ff4d4d;
+            font-weight: 700;
+        }
+        .vulnerability-demo {
+            width: 100%;
+            background-color: rgba(10, 14, 39, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+        .demo-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #ff4d4d;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .register-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .register {
+            width: 140px;
+            height: 80px;
+            background-color: rgba(167, 199, 255, 0.2);
+            border: 1px solid #a7c7ff;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .register-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #a7c7ff;
+            margin-bottom: 5px;
+        }
+        .register-value {
+            font-size: 16px;
+            color: #ffffff;
+        }
+        .arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #ffffff;
+        }
+        .arrow-icon {
+            font-size: 30px;
+        }
+        .arrow-text {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .vulnerability-point {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 77, 77, 0.2);
+            border: 1px solid #ff4d4d;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ff4d4d;
+            white-space: nowrap;
+        }
+        .point-label {
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #ff4d4d;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">Viser le Cœur du Système : Le SMM</h1>
+        </div>
+        <div class="content">
+            <div class="left-section">
+                <div class="smm-description">
+                    <div class="section-title">
+                        <i class="material-icons section-icon">security</i>
+                        La Cible : SMM (System Management Mode)
+                    </div>
+                    <div class="description-content">
+                        <div>• Souvent appelé le <span class="highlight">"Ring -2"</span></div>
+                        <div>• Mode d'exécution le plus privilégié</div>
+                        <div>• Plus que le noyau (Ring 0) et l'hyperviseur (Ring -1)</div>
+                        <div>• Gère le firmware, l'énergie et les fonctions matérielles</div>
+                    </div>
+                </div>
+                <div class="vulnerability">
+                    <div class="section-title">
+                        <i class="material-icons section-icon">bug_report</i>
+                        La Vulnérabilité
+                    </div>
+                    <div class="description-content">
+                        <div>• Sur certains processeurs AMD</div>
+                        <div>• À l'entrée en SMM, le registre <span class="highlight">IDTR</span> n'est pas immédiatement nettoyé</div>
+                        <div>• Si une exception survient à ce moment précis</div>
+                        <div>• Le CPU utilise le gestionnaire d'interruptions de l'OS</div>
+                        <div>• Qui est contrôlé par l'attaquant</div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-section">
+                <div class="visual-container">
+                    <div class="privilege-levels">
+                        <div class="level level-ring-2">
+                            <span class="level-name">SMM</span>
+                            <span class="level-label smm-highlight">Ring -2</span>
+                        </div>
+                        <div class="level level-ring-1">
+                            <span class="level-name">Hyperviseur</span>
+                            <span class="level-label">Ring -1</span>
+                        </div>
+                        <div class="level level-ring0">
+                            <span class="level-name">Noyau</span>
+                            <span class="level-label">Ring 0</span>
+                        </div>
+                        <div class="level level-ring3">
+                            <span class="level-name">Applications</span>
+                            <span class="level-label">Ring 3</span>
+                        </div>
+                    </div>
+
+                    <div class="vulnerability-demo">
+                        <div class="demo-title">Fenêtre de Vulnérabilité à l'Entrée en SMM</div>
+
+                        <div class="register-flow">
+                            <div class="register">
+                                <div class="register-name">IDTR OS</div>
+                                <div class="register-value">Contrôlé par l'attaquant</div>
+                                <div class="point-label">1</div>
+                            </div>
+
+                            <div class="arrow">
+                                <i class="material-icons arrow-icon">arrow_forward</i>
+                                <div class="arrow-text">Entrée en SMM</div>
+                            </div>
+
+                            <div class="register">
+                                <div class="register-name">IDTR SMM</div>
+                                <div class="register-value">Non encore chargé</div>
+                                <div class="point-label">2</div>
+                                <div class="vulnerability-point">VULNÉRABILITÉ</div>
+                            </div>
+
+                            <div class="arrow">
+                                <i class="material-icons arrow-icon">arrow_forward</i>
+                                <div class="arrow-text">Chargement</div>
+                            </div>
+
+                            <div class="register">
+                                <div class="register-name">IDTR SMM</div>
+                                <div class="register-value">Sécurisé</div>
+                                <div class="point-label">3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- PARTIE 1 : AUTO-ZOOM (ADAPTATION ÉCRAN) ---
+        function fitSlide() {
+            const slide = document.querySelector('.slide');
+            if (!slide) return;
+
+            // Vos dimensions originales
+            const baseWidth = 1280;
+            const baseHeight = 720;
+
+            // Dimensions de la fenêtre actuelle
+            const winWidth = window.innerWidth;
+            const winHeight = window.innerHeight;
+
+            // Calcul du ratio pour que tout rentre sans déborder
+            const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
+
+            // Application du zoom
+            slide.style.transform = `scale(${scale})`;
+
+            // On force le centrage et le fond noir via JS pour ne pas toucher votre CSS
+            document.body.style.height = '100vh';
+            document.body.style.margin = '0';
+            document.body.style.display = 'flex';
+            document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center';
+            document.body.style.overflow = 'hidden'; // Stop les scrollbars
+            document.body.style.backgroundColor = '#000'; // Bandes noires cinémas
+        }
+
+        // Lancer au chargement et si on redimensionne la fenêtre
+        fitSlide();
+        window.addEventListener('resize', fitSlide);
+
+
+        // --- PARTIE 2 : NAVIGATION ---
+        const slides = [
+            'index.html', '2.html', '3.html', '4.html',
+            '5.html', '6.html', '7.html', '8.html',
+            '9.html', '10.html'
+        ];
+
+        const path = window.location.pathname;
+        const page = path.split("/").pop() || 'index.html';
+        const currentIndex = slides.indexOf(decodeURIComponent(page)); // decode pour gérer les %20 éventuels
+
+        function goToSlide(direction) {
+            let nextIndex = currentIndex + direction;
+            if (nextIndex >= 0 && nextIndex < slides.length) {
+                window.location.href = slides[nextIndex];
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (['ArrowRight', ' ', 'Enter'].includes(e.key)) goToSlide(1);
+            if (e.key === 'ArrowLeft') goToSlide(-1);
+        });
+
+        // Zones de clic invisibles (Gauche/Droite)
+        const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
+        const leftZone = document.createElement('div');
+        leftZone.style.cssText = navStyle + "left:0;";
+        leftZone.onclick = () => goToSlide(-1);
+
+        const rightZone = document.createElement('div');
+        rightZone.style.cssText = navStyle + "right:0;";
+        rightZone.onclick = () => goToSlide(1);
+
+        document.body.appendChild(leftZone);
+        document.body.appendChild(rightZone);
+    });
+</script>
+</body>
+</html>

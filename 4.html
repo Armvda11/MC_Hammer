@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment Forger une MCE Artificielle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #0a0e27;
+            color: #ffffff;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)),
+                        url('https://picsum.photos/seed/northbridge-circuit-board-attack/1280/720.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background-color: #ff4d4d;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            padding: 20px 70px 50px;
+        }
+        .left-section {
+            flex: 1;
+            padding-right: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .right-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .step {
+            background-color: rgba(167, 199, 255, 0.1);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ff4d4d;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        .step-content {
+            flex-grow: 1;
+        }
+        .step-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #a7c7ff;
+            margin-bottom: 10px;
+        }
+        .step-desc {
+            font-size: 20px;
+            line-height: 1.4;
+        }
+        .highlight {
+            color: #ff4d4d;
+            font-weight: 600;
+        }
+        .visual-container {
+            width: 100%;
+            height: 450px;
+            background-color: rgba(10, 14, 39, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .northbridge {
+            width: 300px;
+            height: 180px;
+            background-color: rgba(167, 199, 255, 0.2);
+            border: 2px solid #a7c7ff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .northbridge-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #a7c7ff;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .northbridge-icon {
+            font-size: 60px;
+            color: #a7c7ff;
+            margin-bottom: 10px;
+        }
+        .northbridge-desc {
+            font-size: 16px;
+            text-align: center;
+            max-width: 80%;
+        }
+        .registers {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .register {
+            width: 60px;
+            height: 80px;
+            background-color: rgba(167, 199, 255, 0.2);
+            border: 1px solid #a7c7ff;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .register-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        .register-label {
+            font-size: 12px;
+            color: #a7c7ff;
+            margin-top: 5px;
+        }
+        .fuzzing-arrow {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .fuzzing-icon {
+            font-size: 30px;
+            color: #ff4d4d;
+            margin-bottom: 5px;
+        }
+        .fuzzing-text {
+            font-size: 14px;
+            color: #ff4d4d;
+            font-weight: 600;
+        }
+        .result {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(255, 77, 77, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #ff4d4d;
+            width: 100%;
+        }
+        .result-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #ff4d4d;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .result-icon {
+            margin-right: 10px;
+        }
+        .result-desc {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        .transformation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .error-type {
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .benign {
+            background-color: rgba(167, 199, 255, 0.2);
+            color: #a7c7ff;
+        }
+        .fatal {
+            background-color: rgba(255, 77, 77, 0.2);
+            color: #ff4d4d;
+        }
+        .arrow-icon {
+            margin: 0 15px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">Comment Forger une MCE Artificielle</h1>
+        </div>
+        <div class="content">
+            <div class="left-section">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">La Cible</div>
+                        <div class="step-desc">
+                            <div>Le <span class="highlight">Northbridge</span></div>
+                            <div>Contrôleur qui gère la mémoire et les périphériques PCIe</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Méthode</div>
+                        <div class="step-desc">
+                            <div><span class="highlight">Fuzzing</span> des registres de configuration du Northbridge</div>
+                            <div>Test automatisé de différentes valeurs</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Le Résultat</div>
+                        <div class="step-desc">
+                            <div>Configuration <span class="highlight">"empoisonnée"</span></div>
+                            <div>Transforme une erreur bénigne en MCE fatale</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Le Contrôle</div>
+                        <div class="step-desc">
+                            <div>L'attaquant peut déclencher un <span class="highlight">crash matériel à volonté</span></div>
+                            <div>Via une simple ligne de code</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-section">
+                <div class="visual-container">
+                    <div class="northbridge">
+                        <div class="northbridge-title">NORTHBRIDGE</div>
+                        <i class="material-icons northbridge-icon">memory</i>
+                        <div class="northbridge-desc">Contrôleur mémoire et PCIe</div>
+
+                        <div class="fuzzing-arrow">
+                            <i class="material-icons fuzzing-icon">arrow_downward</i>
+                            <div class="fuzzing-text">FUZZING</div>
+                        </div>
+                    </div>
+
+                    <div class="registers">
+                        <div class="register">
+                            <div class="register-value">0x1A</div>
+                            <div class="register-label">REG1</div>
+                        </div>
+                        <div class="register">
+                            <div class="register-value">0x3F</div>
+                            <div class="register-label">REG2</div>
+                        </div>
+                        <div class="register">
+                            <div class="register-value">0xFF</div>
+                            <div class="register-label">REG3</div>
+                        </div>
+                        <div class="register">
+                            <div class="register-value">0x00</div>
+                            <div class="register-label">REG4</div>
+                        </div>
+                    </div>
+
+                    <div class="result">
+                        <div class="result-title">
+                            <i class="material-icons result-icon">warning</i>
+                            Configuration Empoisonnée
+                        </div>
+                        <div class="result-desc">
+                            Un accès à un périphérique PCIe inexistant est transformé
+                        </div>
+                        <div class="transformation">
+                            <div class="error-type benign">Master Abort</div>
+                            <i class="material-icons arrow-icon">arrow_forward</i>
+                            <div class="error-type fatal">MCE Fatale</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- PARTIE 1 : AUTO-ZOOM (ADAPTATION ÉCRAN) ---
+        function fitSlide() {
+            const slide = document.querySelector('.slide');
+            if (!slide) return;
+
+            // Vos dimensions originales
+            const baseWidth = 1280;
+            const baseHeight = 720;
+
+            // Dimensions de la fenêtre actuelle
+            const winWidth = window.innerWidth;
+            const winHeight = window.innerHeight;
+
+            // Calcul du ratio pour que tout rentre sans déborder
+            const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
+
+            // Application du zoom
+            slide.style.transform = `scale(${scale})`;
+
+            // On force le centrage et le fond noir via JS pour ne pas toucher votre CSS
+            document.body.style.height = '100vh';
+            document.body.style.margin = '0';
+            document.body.style.display = 'flex';
+            document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center';
+            document.body.style.overflow = 'hidden'; // Stop les scrollbars
+            document.body.style.backgroundColor = '#000'; // Bandes noires cinémas
+        }
+
+        // Lancer au chargement et si on redimensionne la fenêtre
+        fitSlide();
+        window.addEventListener('resize', fitSlide);
+
+
+        // --- PARTIE 2 : NAVIGATION ---
+        const slides = [
+            'index.html', '2.html', '3.html', '4.html',
+            '5.html', '6.html', '7.html', '8.html',
+            '9.html', '10.html'
+        ];
+
+        const path = window.location.pathname;
+        const page = path.split("/").pop() || 'index.html';
+        const currentIndex = slides.indexOf(decodeURIComponent(page)); // decode pour gérer les %20 éventuels
+
+        function goToSlide(direction) {
+            let nextIndex = currentIndex + direction;
+            if (nextIndex >= 0 && nextIndex < slides.length) {
+                window.location.href = slides[nextIndex];
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (['ArrowRight', ' ', 'Enter'].includes(e.key)) goToSlide(1);
+            if (e.key === 'ArrowLeft') goToSlide(-1);
+        });
+
+        // Zones de clic invisibles (Gauche/Droite)
+        const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
+        const leftZone = document.createElement('div');
+        leftZone.style.cssText = navStyle + "left:0;";
+        leftZone.onclick = () => goToSlide(-1);
+
+        const rightZone = document.createElement('div');
+        rightZone.style.cssText = navStyle + "right:0;";
+        rightZone.onclick = () => goToSlide(1);
+
+        document.body.appendChild(leftZone);
+        document.body.appendChild(rightZone);
+    });
+</script>
+</body>
+</html>
