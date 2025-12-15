@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L'Exécution : God Mode</title>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <title>L'EXÉCUTION : God Mode</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -12,11 +12,8 @@
 
         .slide {
             width: 1280px; height: 720px; position: relative;
-           /* NOUVEAU FOND POUR SLIDE 9 */
-/* Image : Gros plan sombre sur des circuits imprimés avec des lueurs rouges/oranges */
-background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95)),
-            url('https://images.unsplash.com/photo-1555664424-778a1e5e1b48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&q=80');
-            background-size: cover; display: flex; flex-direction: column; padding: 40px 80px;
+            background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95));
+            display: flex; flex-direction: column; padding: 40px 80px;
         }
 
         .title { font-size: 48px; font-weight: 700; border-bottom: 4px solid #ff4d4d; display: inline-block; padding-bottom: 10px; margin-bottom: 30px; }
@@ -24,62 +21,54 @@ background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95)),
         .content { display: flex; flex: 1; gap: 60px; align-items: center; }
 
         /* GAUCHE : La Chaîne d'Exploitation (Kill Chain) */
-        .left-section { flex: 1.1; display: flex; flex-direction: column; gap: 20px; }
+        .left-section { flex: 1; display: flex; flex-direction: column; gap: 20px; }
 
         .chain-link {
-            background: rgba(167, 199, 255, 0.1); border-radius: 10px; padding: 15px 20px;
-            display: flex; align-items: flex-start; position: relative;
+            background: rgba(167, 199, 255, 0.1); border-radius: 10px; padding: 20px;
+            display: flex; align-items: center; position: relative;
             border-left: 4px solid #a7c7ff;
         }
         /* Connecteurs entre les boîtes */
         .chain-link:not(:last-child)::after {
-            content: ''; position: absolute; left: 34px; bottom: -25px;
+            content: ''; position: absolute; left: 30px; bottom: -25px;
             width: 2px; height: 25px; background: rgba(255,255,255,0.3);
         }
 
         .link-icon {
-            width: 40px; height: 40px; background: rgba(167, 199, 255, 0.2);
+            width: 50px; height: 50px; background: rgba(167, 199, 255, 0.2);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            margin-right: 15px; font-size: 20px; color: #a7c7ff; flex-shrink: 0; margin-top: 5px;
+            margin-right: 20px; font-size: 24px; color: #a7c7ff;
         }
-        .link-content { width: 100%; }
-        .link-content h3 { margin: 0 0 5px 0; color: #fff; font-size: 18px; }
-        .link-content p { margin: 0; color: #ccc; font-size: 14px; margin-bottom: 8px; }
-
-        /* VISUEL IDT (Le nouveau bloc) */
-        .idt-box {
-            background: rgba(0, 0, 0, 0.5); border: 1px solid #444; border-radius: 4px;
-            padding: 8px; font-family: 'Fira Code', monospace; font-size: 12px;
-        }
-        .idt-row { display: flex; justify-content: space-between; padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .idt-head { color: #888; font-size: 10px; text-transform: uppercase; border:none; margin-bottom: 2px; }
-        .idt-target { background: rgba(255, 77, 77, 0.15); color: #fff; }
-        .addr-old { text-decoration: line-through; color: #666; margin-right: 5px; }
-        .addr-new { color: #ff4d4d; font-weight: bold; }
-        .hack-arrow { color: #ff4d4d; margin: 0 5px; font-size: 12px; }
+        .link-content h3 { margin: 0 0 5px 0; color: #fff; font-size: 20px; }
+        .link-content p { margin: 0; color: #ccc; font-size: 16px; }
 
         /* Le dernier maillon est rouge (Impact) */
         .link-final { background: rgba(255, 77, 77, 0.1); border-left-color: #ff4d4d; }
         .link-final .link-icon { background: rgba(255, 77, 77, 0.2); color: #ff4d4d; }
         .link-final h3 { color: #ff4d4d; }
+        .slide-number { position: absolute; right: 20px; bottom: 14px; color: #cbd6ff; font-size: 14px; background: rgba(0,0,0,0.25); padding: 6px 10px; border-radius: 6px; }
 
         /* DROITE : Le Visuel "God Mode" */
         .right-section {
-            flex: 0.9;
-            background: rgba(10, 14, 39, 0.6); border-radius: 20px;
+            flex: 1;
+            background: rgba(10, 14, 36, 0.69); border-radius: 20px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100%; border: 1px solid rgba(255, 77, 77, 0.2);
+            height: 100%; border: 1px solid rgba(255, 77, 77, 0.11);
             position: relative; overflow: hidden;
+            box-shadow: inset 0 5px 18px rgba(0,0,0,0.32);
         }
 
+        /* Effet de brillance */
         .glow-bg {
             position: absolute; width: 300px; height: 300px;
             background: radial-gradient(circle, rgba(255,77,77,0.3) 0%, rgba(0,0,0,0) 70%);
             animation: pulse-glow 3s infinite;
         }
+
         .god-icon { font-size: 120px; color: #ff4d4d; margin-bottom: 20px; z-index: 2; text-shadow: 0 0 20px rgba(255, 77, 77, 0.5); }
         .god-title { font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 10px; z-index: 2; text-transform: uppercase; letter-spacing: 2px; }
         .god-desc { font-size: 20px; color: #ccc; text-align: center; z-index: 2; max-width: 80%; }
+
         .privilege-badge {
             margin-top: 30px; padding: 10px 20px; border-radius: 20px;
             background: #ff4d4d; color: #fff; font-weight: bold; font-size: 18px;
@@ -95,32 +84,15 @@ background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95)),
 </head>
 <body>
     <div class="slide">
-        <h1 class="title">L'ATTAQUE CROSS-CORE : EXÉCUTION</h1>
+        <h1 class="title">L'ATTAQUE CROSS-CORE : IMPACT</h1>
 
         <div class="content">
             <div class="left-section">
                 <div class="chain-link">
                     <div class="link-icon"><i class="material-icons">build</i></div>
                     <div class="link-content">
-                        <h3>1. Préparation (Le Piège)</h3>
-                        <p>On modifie la table des interruptions (IDT) pour détourner le gestionnaire MCE.</p>
-
-                        <div class="idt-box">
-                            <div class="idt-row idt-head">
-                                <span># INT</span> <span>FONCTION CIBLE</span>
-                            </div>
-                            <div class="idt-row">
-                                <span>14 (Page Fault)</span> <span style="color:#888">0xFFFFF800...</span>
-                            </div>
-                            <div class="idt-row idt-target">
-                                <span>18 (MCE)</span>
-                                <span>
-                                    <span class="addr-old">0xFFFF...</span>
-                                    <i class="material-icons hack-arrow">arrow_forward</i>
-                                    <span class="addr-new">0xBAD_C0DE</span>
-                                </span>
-                            </div>
-                        </div>
+                        <h3>1. Préparation</h3>
+                        <p>Empoisonnement du Northbridge & Fausse IDT en place.</p>
                     </div>
                 </div>
 
@@ -128,20 +100,15 @@ background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95)),
                     <div class="link-icon"><i class="material-icons">timer</i></div>
                     <div class="link-content">
                         <h3>2. Tir Synchronisé</h3>
-                        <p>Le Cœur 1 sature le bus PCIe. Le Cœur 0 entre en SMM.</p>
-                        <p style="color:#ff4d4d; font-weight:bold; font-size:13px; margin-top:5px;">
-                            <i class="material-icons" style="font-size:12px; vertical-align:middle;">bolt</i>
-                            Erreur MCE retardée de 12 000 cycles
-                        </p>
+                        <p>L'erreur retardée (12 000 cycles) frappe le Cœur victime à l'instant T.</p>
                     </div>
                 </div>
 
                 <div class="chain-link link-final">
                     <div class="link-icon"><i class="material-icons">gavel</i></div>
                     <div class="link-content">
-                        <h3>3. Capture SMM</h3>
-                        <p>Le Cœur 0 reçoit l'erreur en pleine transition.</p>
-                        <p>Il lit notre <strong>Fausse IDT</strong> et exécute <code>0xBAD_C0DE</code> avec les droits Ring -2.</p>
+                        <h3>3. Brèche SMM</h3>
+                        <p>Le processeur exécute notre code avec les privilèges Ring -2.</p>
                     </div>
                 </div>
             </div>
@@ -196,6 +163,11 @@ background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95)),
         const leftZone = document.createElement('div'); leftZone.style.cssText = navStyle + "left:0;"; leftZone.onclick = () => goToSlide(-1);
         const rightZone = document.createElement('div'); rightZone.style.cssText = navStyle + "right:0;"; rightZone.onclick = () => goToSlide(1);
         document.body.appendChild(leftZone); document.body.appendChild(rightZone);
+        // slide number
+        const slideNumberEl = document.createElement('div');
+        slideNumberEl.className = 'slide-number';
+        slideNumberEl.textContent = `${currentIndex+1} / ${slides.length}`;
+        const slideEl = document.querySelector('.slide'); if (slideEl) slideEl.appendChild(slideNumberEl);
     });
     </script>
 </body>

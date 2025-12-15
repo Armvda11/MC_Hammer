@@ -19,13 +19,10 @@
         }
         .slide {
             width: 1280px;
-            min-height: 720px;
+            height: 720px;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)),
-                        url('https://picsum.photos/seed/cpu-error-warning-technical/1280/720.jpg');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9));
             display: flex;
             flex-direction: column;
         }
@@ -107,6 +104,7 @@
             position: relative;
             overflow: hidden;
         }
+        .slide-number { position: absolute; right: 20px; bottom: 14px; color: #cbd6ff; font-size: 14px; background: rgba(0,0,0,0.25); padding: 6px 10px; border-radius: 6px; }
         .cpu-icon {
             font-size: 120px;
             color: #a7c7ff;
@@ -276,6 +274,11 @@
 
         document.body.appendChild(leftZone);
         document.body.appendChild(rightZone);
+        // slide number
+        const slideNumberEl = document.createElement('div');
+        slideNumberEl.className = 'slide-number';
+        slideNumberEl.textContent = `${currentIndex+1} / ${slides.length}`;
+        const slideEl = document.querySelector('.slide'); if (slideEl) slideEl.appendChild(slideNumberEl);
     });
 </script>
 </body>
