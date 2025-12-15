@@ -7,356 +7,147 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #0a0e27;
-            color: #ffffff;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #0a0e27; color: #ffffff; overflow: hidden; }
+
         .slide {
-            width: 1280px;
-            min-height: 720px;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)),
+            width: 1280px; height: 720px; position: relative;
+            background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95)),
                         url('https://picsum.photos/seed/cybersecurity-protection-defense/1280/720.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
+            background-size: cover; display: flex; flex-direction: column; padding: 30px 80px;
         }
-        .header {
-            padding: 40px 70px 20px;
+
+        .title { font-size: 42px; font-weight: 700; border-bottom: 4px solid #ff4d4d; display: inline-block; padding-bottom: 10px; margin-bottom: 20px; }
+
+        .content { display: flex; flex: 1; gap: 40px; }
+
+        /* GAUCHE : Texte compacté */
+        .left-section { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+
+        .info-box {
+            background: rgba(167, 199, 255, 0.1); border-radius: 10px; padding: 20px;
+            display: flex; flex-direction: column;
         }
-        .title {
-            font-size: 40px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
+        .box-title { font-size: 22px; font-weight: 600; color: #a7c7ff; margin-bottom: 10px; display: flex; align-items: center; }
+        .box-title i { margin-right: 10px; color: #a7c7ff; }
+        .box-content { font-size: 18px; line-height: 1.4; color: #ddd; }
+        .highlight { color: #ff4d4d; font-weight: bold; }
+
+        /* Style spécifique pour la conclusion (encadré rouge) */
+        .conclusion-box {
+            background: rgba(255, 77, 77, 0.1); border-left: 4px solid #ff4d4d; border-radius: 8px; padding: 20px;
         }
-        .title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background-color: #ff4d4d;
-        }
-        .content {
-            flex-grow: 1;
-            display: flex;
-            padding: 20px 70px 50px;
-        }
-        .left-section {
-            flex: 1;
-            padding-right: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+        .conclusion-title { color: #ff4d4d; }
+        .conclusion-title i { color: #ff4d4d; }
+
+        /* DROITE : Visuel ajusté */
         .right-section {
             flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: rgba(10, 14, 39, 0.6); border-radius: 15px; padding: 20px;
+            border: 1px solid rgba(167, 199, 255, 0.1);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .countermeasure {
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 30px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .section-title {
-            font-size: 28px;
-            font-weight: 600;
-            color: #a7c7ff;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-        }
-        .section-icon {
-            margin-right: 15px;
-            color: #a7c7ff;
-        }
-        .countermeasure-content {
-            font-size: 20px;
-            line-height: 1.5;
-        }
-        .highlight {
-            color: #ff4d4d;
-            font-weight: 600;
-        }
-        .evolution {
-            background-color: rgba(255, 77, 77, 0.1);
-            border-radius: 10px;
-            padding: 30px;
-            border-left: 4px solid #ff4d4d;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .conclusion {
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 10px;
-            padding: 30px;
-            margin-top: 30px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .visual-container {
-            width: 100%;
-            height: 450px;
-            background-color: rgba(10, 14, 39, 0.7);
-            border-radius: 10px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .defense-layers {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 30px;
-        }
+
+        /* Couches de défense */
+        .layers-stack { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 30px; }
         .layer {
-            width: 80%;
-            height: 80px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            position: relative;
+            width: 80%; height: 60px; margin-bottom: 10px; border-radius: 8px;
+            display: flex; align-items: center; padding: 0 20px; position: relative;
+            font-size: 18px; font-weight: 600;
         }
-        .hardware {
-            background-color: rgba(167, 199, 255, 0.2);
-            border: 1px solid #a7c7ff;
-            z-index: 3;
+        .layer-hw { background: rgba(167, 199, 255, 0.2); border: 1px solid #a7c7ff; color: #a7c7ff; }
+        .layer-fw { background: rgba(255, 77, 77, 0.2); border: 1px solid #ff4d4d; color: #ff4d4d; width: 85%; z-index: 2; }
+        .layer-sw { background: rgba(167, 199, 255, 0.2); border: 1px solid #a7c7ff; color: #a7c7ff; width: 70%; }
+
+        .layer i { font-size: 28px; margin-right: 15px; }
+        .patch-tag {
+            position: absolute; right: 15px; background: #ff4d4d; color: #fff;
+            padding: 2px 10px; border-radius: 15px; font-size: 12px; text-transform: uppercase;
         }
-        .firmware {
-            background-color: rgba(255, 77, 77, 0.2);
-            border: 1px solid #ff4d4d;
-            z-index: 2;
-            width: 70%;
-        }
-        .software {
-            background-color: rgba(167, 199, 255, 0.2);
-            border: 1px solid #a7c7ff;
-            z-index: 1;
-            width: 60%;
-        }
-        .layer-icon {
-            font-size: 36px;
-            margin-right: 15px;
-        }
-        .hardware-icon {
-            color: #a7c7ff;
-        }
-        .firmware-icon {
-            color: #ff4d4d;
-        }
-        .software-icon {
-            color: #a7c7ff;
-        }
-        .layer-text {
-            font-size: 20px;
-            font-weight: 600;
-        }
-        .patch-badge {
-            position: absolute;
-            right: 20px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid #ffffff;
-            border-radius: 20px;
-            padding: 5px 15px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-        .lessons {
-            width: 100%;
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        .lessons-title {
-            font-size: 22px;
-            font-weight: 600;
-            color: #a7c7ff;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-        .lessons-icon {
-            margin-right: 10px;
-            color: #a7c7ff;
-        }
-        .lessons-points {
-            display: flex;
-            justify-content: space-between;
-        }
-        .lesson-point {
-            width: 48%;
-            background-color: rgba(10, 14, 39, 0.5);
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            align-items: flex-start;
-        }
-        .point-icon {
-            font-size: 24px;
-            color: #ff4d4d;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-        .point-text {
-            font-size: 18px;
-            line-height: 1.3;
-        }
+
+        /* Leçons */
+        .lessons-box { width: 100%; background: rgba(167, 199, 255, 0.05); border-radius: 10px; padding: 20px; }
+        .lessons-head { font-size: 20px; font-weight: bold; color: #a7c7ff; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .lesson-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 16px; }
+        .lesson-item i { color: #ff4d4d; margin-right: 10px; font-size: 20px; }
+
     </style>
 </head>
 <body>
     <div class="slide">
-        <div class="header">
-            <h1 class="title">Comment se Protéger et Leçons à Tirer</h1>
-        </div>
+        <h1 class="title">Comment se Protéger & Leçons à Tirer</h1>
+
         <div class="content">
             <div class="left-section">
-                <div class="countermeasure">
-                    <div class="section-title">
-                        <i class="material-icons section-icon">build</i>
-                        Contre-mesure (Patch Firmware)
-                    </div>
-                    <div class="countermeasure-content">
-                        <div>• Solution au niveau du <span class="highlight">firmware (BIOS/UEFI)</span></div>
-                        <div>• Modification du code d'entrée en SMM</div>
-                        <div>• Charger une table d'interruptions sûre <span class="highlight">avant</span> d'activer la gestion des erreurs MCE</div>
+                <div class="info-box">
+                    <div class="box-title"><i class="material-icons">build</i> Patch Firmware</div>
+                    <div class="box-content">
+                        <div>• Solution critique : Mise à jour du <span class="highlight">Microcode</span> (BIOS/UEFI).</div>
+                        <div>• Verrouiller l'IDT <span class="highlight">avant</span> d'activer la gestion des erreurs MCE.</div>
                     </div>
                 </div>
 
-                <div class="evolution">
-                    <div class="section-title">
-                        <i class="material-icons section-icon">trending_up</i>
-                        Évolution Matérielle
-                    </div>
-                    <div class="countermeasure-content">
-                        <div>• Processeurs plus récents non vulnérables</div>
-                        <div>• Architecture <span class="highlight">Zen et suivantes</span> d'AMD</div>
-                        <div>• Gestion améliorée des erreurs matérielles</div>
+                <div class="info-box">
+                    <div class="box-title"><i class="material-icons">trending_up</i> Évolution Matérielle</div>
+                    <div class="box-content">
+                        <div>• Les architectures récentes (AMD Zen+) ont corrigé cette faille logique.</div>
+                        <div>• La gestion des erreurs est désormais isolée plus tôt.</div>
                     </div>
                 </div>
 
-                <div class="conclusion">
-                    <div class="section-title">
-                        <i class="material-icons section-icon">lightbulb</i>
-                        Conclusion
-                    </div>
-                    <div class="countermeasure-content">
-                        <div>• Même les couches les plus profondes ne sont pas infaillibles</div>
-                        <div>• La frontière matériel/logiciel est un champ de bataille complexe</div>
-                        <div>• Utilisation créative des spécifications → conséquences dramatiques</div>
+                <div class="info-box conclusion-box">
+                    <div class="box-title conclusion-title"><i class="material-icons">lightbulb</i> Conclusion</div>
+                    <div class="box-content">
+                        <div>• La complexité matérielle (PCIe) peut casser la sécurité logicielle.</div>
+                        <div>• Fiabilité et Sécurité sont parfois contradictoires.</div>
                     </div>
                 </div>
             </div>
 
             <div class="right-section">
-                <div class="visual-container">
-                    <div class="defense-layers">
-                        <div class="layer hardware">
-                            <i class="material-icons layer-icon hardware-icon">memory</i>
-                            <div class="layer-text">Matériel</div>
-                        </div>
-
-                        <div class="layer firmware">
-                            <i class="material-icons layer-icon firmware-icon">developer_board</i>
-                            <div class="layer-text">Firmware (BIOS/UEFI)</div>
-                            <div class="patch-badge">PATCH</div>
-                        </div>
-
-                        <div class="layer software">
-                            <i class="material-icons layer-icon software-icon">computer</i>
-                            <div class="layer-text">Logiciel (OS/Applications)</div>
-                        </div>
+                <div class="layers-stack">
+                    <div class="layer layer-hw"><i class="material-icons">memory</i> Matériel</div>
+                    <div class="layer layer-fw">
+                        <i class="material-icons">developer_board</i> Firmware
+                        <span class="patch-tag">PATCH ICI</span>
                     </div>
+                    <div class="layer layer-sw"><i class="material-icons">computer</i> Logiciel (OS)</div>
+                </div>
 
-                    <div class="lessons">
-                        <div class="lessons-title">
-                            <i class="material-icons lessons-icon">school</i>
-                            Leçons Clés
-                        </div>
-                        <div class="lessons-points">
-                            <div class="lesson-point">
-                                <i class="material-icons point-icon">security</i>
-                                <div class="point-text">
-                                    La sécurité est un processus sans fin
-                                </div>
-                            </div>
-                            <div class="lesson-point">
-                                <i class="material-icons point-icon">psychology</i>
-                                <div class="point-text">
-                                    Remettre en question les hypothèses fondamentales
-                                </div>
-                            </div>
-                        </div>
+                <div class="lessons-box">
+                    <div class="lessons-head"><i class="material-icons">school</i> Leçons Clés</div>
+                    <div class="lesson-item">
+                        <i class="material-icons">security</i> La sécurité est un processus continu.
+                    </div>
+                    <div class="lesson-item">
+                        <i class="material-icons">psychology</i> Toujours remettre en question les hypothèses "bas niveau".
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-<script>
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. AUTO-ZOOM ---
+        // 1. AUTO-ZOOM
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
-            const baseWidth = 1280;
-            const baseHeight = 720;
-            const winWidth = window.innerWidth;
-            const winHeight = window.innerHeight;
-            const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
+            const baseWidth = 1280; const baseHeight = 720;
+            const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
             slide.style.transform = `scale(${scale})`;
-            document.body.style.height = '100vh';
-            document.body.style.margin = '0';
-            document.body.style.display = 'flex';
-            document.body.style.justifyContent = 'center';
-            document.body.style.alignItems = 'center';
-            document.body.style.overflow = 'hidden';
-            document.body.style.backgroundColor = '#000';
+            document.body.style.height = '100vh'; document.body.style.margin = '0';
+            document.body.style.display = 'flex'; document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center'; document.body.style.backgroundColor = '#000'; document.body.style.overflow = 'hidden';
         }
-        fitSlide();
-        window.addEventListener('resize', fitSlide);
+        fitSlide(); window.addEventListener('resize', fitSlide);
 
-        // --- 2. NAVIGATION (11 SLIDES) ---
+        // 2. NAVIGATION (11 SLIDES)
         const slides = [
-            'slide1.html',  // Intro
-            'slide2.html',  // Cible SMM
-            'slide3.html',  // Arme MCE
-            'slide4.html',  // Brèche (Votre slide bonus)
-            'slide5.html',  // Forge
-            'slide6.html',  // Problème Timing
-            'slide7.html',  // Solution PCIe
-            'slide8.html',  // Fenêtre de Tir (Nouvelle)
-            'slide9.html',  // Attaque Cross-Core
-            'slide10.html', // Impact
-            'slide11.html'  // Conclusion
+            'slide1.html', 'slide2.html', 'slide3.html', 'slide4.html',
+            'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html',
+            'slide9.html', 'slide10.html', 'slide11.html'
         ];
-
         const path = window.location.pathname;
         const page = path.split("/").pop() || 'slide1.html';
         const currentIndex = slides.indexOf(decodeURIComponent(page));
@@ -374,17 +165,10 @@
         });
 
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
-        const leftZone = document.createElement('div');
-        leftZone.style.cssText = navStyle + "left:0;";
-        leftZone.onclick = () => goToSlide(-1);
-
-        const rightZone = document.createElement('div');
-        rightZone.style.cssText = navStyle + "right:0;";
-        rightZone.onclick = () => goToSlide(1);
-
-        document.body.appendChild(leftZone);
-        document.body.appendChild(rightZone);
+        const leftZone = document.createElement('div'); leftZone.style.cssText = navStyle + "left:0;"; leftZone.onclick = () => goToSlide(-1);
+        const rightZone = document.createElement('div'); rightZone.style.cssText = navStyle + "right:0;"; rightZone.onclick = () => goToSlide(1);
+        document.body.appendChild(leftZone); document.body.appendChild(rightZone);
     });
-</script>
+    </script>
 </body>
 </html>
