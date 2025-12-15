@@ -7,364 +7,215 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #0a0e27;
-            color: #ffffff;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #000; color: #fff; overflow: hidden; }
+
         .slide {
-            width: 1280px;
-            min-height: 720px;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9)),
+            width: 1280px; height: 720px; position: relative;
+            background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95)),
                         url('https://picsum.photos/seed/cybersecurity-system-control-hack/1280/720.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
+            background-size: cover; display: flex; flex-direction: column; padding: 40px 80px;
         }
-        .header {
-            padding: 40px 70px 20px;
-        }
-        .title {
-            font-size: 40px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
-        }
-        .title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background-color: #ff4d4d;
-        }
-        .content {
-            flex-grow: 1;
-            display: flex;
-            padding: 20px 70px 50px;
-        }
-        .left-section {
-            flex: 1;
-            padding-right: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .right-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .impact-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-gap: 25px;
-        }
+
+        .title { font-size: 48px; font-weight: 700; border-bottom: 4px solid #ff4d4d; display: inline-block; padding-bottom: 10px; margin-bottom: 30px; }
+
+        .content { display: flex; flex: 1; gap: 40px; }
+
+        /* GAUCHE : Cartes d'impact */
+        .left-section { flex: 0.9; display: flex; flex-direction: column; justify-content: center; }
+        .impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .impact-card {
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 10px;
-            padding: 25px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s;
+            background: rgba(167, 199, 255, 0.05); border-radius: 12px; padding: 20px;
+            border: 1px solid rgba(167, 199, 255, 0.1); transition: transform 0.3s;
         }
-        .impact-card:hover {
-            transform: translateY(-5px);
-            background-color: rgba(167, 199, 255, 0.15);
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .card-icon {
-            font-size: 36px;
-            color: #ff4d4d;
-            margin-right: 15px;
-        }
-        .card-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: #a7c7ff;
-        }
-        .card-content {
-            font-size: 20px;
-            line-height: 1.4;
-        }
-        .highlight {
-            color: #ff4d4d;
-            font-weight: 600;
-        }
-        .visual-container {
-            width: 100%;
-            height: 450px;
-            background-color: rgba(10, 14, 39, 0.7);
-            border-radius: 10px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .impact-card:hover { transform: translateY(-5px); border-color: #ff4d4d; background: rgba(167, 199, 255, 0.1); }
+        .card-title { font-size: 20px; font-weight: 600; color: #a7c7ff; margin-bottom: 10px; display: flex; align-items: center; }
+        .card-title i { margin-right: 10px; color: #ff4d4d; }
+        .card-text { font-size: 16px; line-height: 1.4; color: #ddd; }
+        .highlight { color: #ff4d4d; font-weight: bold; }
+
+        /* DROITE : Le Visuel "Target" refait à neuf */
+        .right-section {
+            flex: 1.3;
+            background: rgba(10, 14, 39, 0.6);
+            border-radius: 20px;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .system-control {
+
+        /* Conteneur Radar */
+        .radar-container {
+            position: relative;
             width: 100%;
-            height: 100%;
+            height: 350px; /* Espace pour les cercles */
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            margin-top: 20px;
         }
-        .control-icon {
-            font-size: 80px;
-            color: #ff4d4d;
-            margin-bottom: 20px;
-        }
-        .control-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .privilege-level {
+
+        /* Les Anneaux (Cercles pointillés) */
+        .ring {
             position: absolute;
-            width: 160px;
-            height: 160px;
             border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 77, 77, 0.2);
+            border: 1px dashed rgba(167, 199, 255, 0.2);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .ring-3 { width: 450px; height: 450px; opacity: 0.3; }
+        .ring-0 { width: 350px; height: 350px; opacity: 0.5; }
+        .ring-1 { width: 250px; height: 250px; opacity: 0.7; }
+
+        /* Le Cœur Rouge (SMM) */
+        .core-smm {
+            position: absolute;
+            width: 160px; height: 160px;
+            background: radial-gradient(circle, rgba(255, 77, 77, 0.6) 0%, rgba(255, 77, 77, 0.1) 70%);
             border: 2px solid #ff4d4d;
-            z-index: 2;
-        }
-        .privilege-icon {
-            font-size: 40px;
-            color: #ff4d4d;
-            margin-bottom: 10px;
-        }
-        .privilege-label {
-            font-size: 20px;
-            font-weight: 600;
-            color: #ff4d4d;
-            text-align: center;
-        }
-        .privilege-ring {
-            position: absolute;
             border-radius: 50%;
-            border: 1px dashed rgba(167, 199, 255, 0.3);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 0 40px rgba(255, 77, 77, 0.4);
+            z-index: 10;
+            animation: pulse 3s infinite;
         }
-        .ring-3 {
-            width: 300px;
-            height: 300px;
+
+        /* Le Bouclier et Textes Centraux */
+        .shield-icon {
+            position: absolute; top: -40px;
+            background: #0a0e27; padding: 5px; border-radius: 50%;
         }
-        .ring-0 {
-            width: 240px;
-            height: 240px;
+        .shield-icon i { font-size: 48px; color: #ff4d4d; }
+
+        .smm-title { font-size: 20px; font-weight: 800; text-transform: uppercase; color: #fff; margin-top: 10px; }
+        .smm-subtitle { font-size: 14px; color: #ff4d4d; font-weight: bold; }
+        .abs-privilege {
+            position: absolute; top: -60px; width: 300px; text-align: center;
+            font-size: 24px; font-weight: 700; color: #fff; text-shadow: 0 2px 4px #000;
         }
-        .ring-1 {
-            width: 180px;
-            height: 180px;
-        }
-        .ring-2 {
-            width: 120px;
-            height: 120px;
-            border-color: rgba(255, 77, 77, 0.3);
-        }
-        .ring-label {
-            position: absolute;
-            font-size: 16px;
-            color: rgba(167, 199, 255, 0.7);
-        }
-        .ring-3-label {
-            top: 50px;
-            right: 50px;
-        }
-        .ring-0-label {
-            top: 100px;
-            right: 100px;
-        }
-        .ring-1-label {
-            top: 150px;
-            right: 150px;
-        }
-        .ring-2-label {
-            top: 200px;
-            right: 200px;
-            color: rgba(255, 77, 77, 0.7);
-        }
-        .capabilities {
-            margin-top: 30px;
-            width: 100%;
+
+        /* Les Labels à droite (Escalier) */
+        .ring-label { position: absolute; font-size: 14px; color: #a7c7ff; text-align: left; }
+        .label-3 { top: 20%; right: 10px; }
+        .label-0 { top: 35%; right: 60px; }
+        .label-1 { top: 48%; right: 100px; }
+
+        /* La ligne du bas (Icônes) */
+        .bottom-icons {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
+            width: 90%;
+            margin-top: -30px; /* Remonte un peu sur les cercles */
+            z-index: 20;
         }
-        .capability {
-            width: 30%;
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 8px;
+        .icon-box {
+            background: rgba(10, 20, 50, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            border-radius: 10px;
             text-align: center;
+            width: 30%;
+            backdrop-filter: blur(5px);
         }
-        .capability-icon {
-            font-size: 30px;
-            color: #a7c7ff;
-            margin-bottom: 10px;
-        }
-        .capability-text {
-            font-size: 16px;
-            line-height: 1.3;
+        .icon-box i { font-size: 28px; color: #a7c7ff; margin-bottom: 5px; }
+        .icon-box div { font-size: 13px; color: #ccc; line-height: 1.2; }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 77, 77, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
         }
     </style>
 </head>
 <body>
     <div class="slide">
-        <div class="header">
-            <h1 class="title">Une Fois le SMM Contrôlé...</h1>
-        </div>
+        <h1 class="title">Une Fois le SMM Contrôlé...</h1>
+
         <div class="content">
             <div class="left-section">
                 <div class="impact-grid">
                     <div class="impact-card">
-                        <div class="card-header">
-                            <i class="material-icons card-icon">admin_panel_settings</i>
-                            <div class="card-title">Contrôle Total</div>
-                        </div>
-                        <div class="card-content">
-                            L'attaquant devient <span class="highlight">"Dieu"</span> sur le système
-                        </div>
+                        <div class="card-title"><i class="material-icons">admin_panel_settings</i> Contrôle Total</div>
+                        <div class="card-text">L'attaquant devient <span class="highlight">"Dieu"</span>. Il est au-dessus de tout.</div>
                     </div>
-
                     <div class="impact-card">
-                        <div class="card-header">
-                            <i class="material-icons card-icon">lock_open</i>
-                            <div class="card-title">Vol de Secrets</div>
-                        </div>
-                        <div class="card-content">
-                            Lecture de la <span class="highlight">SMRAM</span> pour dérober clés de chiffrement et mots de passe
-                        </div>
+                        <div class="card-title"><i class="material-icons">visibility_off</i> Invisibilité</div>
+                        <div class="card-text">L'antivirus (Ring 0) est aveugle face au Ring -2.</div>
                     </div>
-
                     <div class="impact-card">
-                        <div class="card-header">
-                            <i class="material-icons card-icon">save</i>
-                            <div class="card-title">Persistance Ultime</div>
-                        </div>
-                        <div class="card-content">
-                            Accès en écriture au <span class="highlight">Flash SPI</span> (BIOS/UEFI)
-                        </div>
+                        <div class="card-title"><i class="material-icons">save</i> Persistance</div>
+                        <div class="card-text">Écriture dans le <span class="highlight">Firmware</span>. Résiste au formatage.</div>
                     </div>
-
                     <div class="impact-card">
-                        <div class="card-header">
-                            <i class="material-icons card-icon">visibility_off</i>
-                            <div class="card-title">Furtivité</div>
-                        </div>
-                        <div class="card-content">
-                            Invisible pour l'antivirus et le système d'exploitation
-                        </div>
+                        <div class="card-title"><i class="material-icons">lock_open</i> Secrets</div>
+                        <div class="card-text">Accès direct à la RAM : clés de chiffrement, mots de passe.</div>
                     </div>
                 </div>
             </div>
 
             <div class="right-section">
-                <div class="visual-container">
-                    <div class="system-control">
-                        <i class="material-icons control-icon">security</i>
-                        <div class="control-title">Privilèges Absolus</div>
+                <div class="radar-container">
+                    <div class="ring ring-3"></div>
+                    <div class="ring ring-0"></div>
+                    <div class="ring ring-1"></div>
 
-                        <div class="privilege-level">
-                            <i class="material-icons privilege-icon">verified_user</i>
-                            <div class="privilege-label">SMM</div>
-                        </div>
+                    <div class="ring-label label-3">Applications (Ring 3)</div>
+                    <div class="ring-label label-0">Noyau (Ring 0)</div>
+                    <div class="ring-label label-1">Hyperviseur (Ring -1)</div>
 
-                        <div class="privilege-ring ring-3"></div>
-                        <div class="privilege-ring ring-0"></div>
-                        <div class="privilege-ring ring-1"></div>
-                        <div class="privilege-ring ring-2"></div>
+                    <div class="core-smm">
+                        <div class="abs-privilege">Privilèges Absolus</div>
+                        <div class="shield-icon"><i class="material-icons">security</i></div>
+                        <div class="smm-title">SMM</div>
+                        <div class="smm-subtitle">(Ring -2)</div>
+                    </div>
+                </div>
 
-                        <div class="ring-label ring-3-label">Applications (Ring 3)</div>
-                        <div class="ring-label ring-0-label">Noyau (Ring 0)</div>
-                        <div class="ring-label ring-1-label">Hyperviseur (Ring -1)</div>
-                        <div class="ring-label ring-2-label">SMM (Ring -2)</div>
-
-                        <div class="capabilities">
-                            <div class="capability">
-                                <i class="material-icons capability-icon">flash_on</i>
-                                <div class="capability-text">Survit au formatage</div>
-                            </div>
-                            <div class="capability">
-                                <i class="material-icons capability-icon">vpn_key</i>
-                                <div class="capability-text">Accès au firmware</div>
-                            </div>
-                            <div class="capability">
-                                <i class="material-icons capability-icon">update</i>
-                                <div class="capability-text">Persiste après réinstallation</div>
-                            </div>
-                        </div>
+                <div class="bottom-icons">
+                    <div class="icon-box">
+                        <i class="material-icons">flash_on</i>
+                        <div>Survit au<br>formatage</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="material-icons">vpn_key</i>
+                        <div>Accès au<br>firmware</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="material-icons">update</i>
+                        <div>Persiste après<br>réinstallation</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<script>
+
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. AUTO-ZOOM ---
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
-            const baseWidth = 1280;
-            const baseHeight = 720;
-            const winWidth = window.innerWidth;
-            const winHeight = window.innerHeight;
-            const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
+            const baseWidth = 1280; const baseHeight = 720;
+            const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
             slide.style.transform = `scale(${scale})`;
-            document.body.style.height = '100vh';
-            document.body.style.margin = '0';
-            document.body.style.display = 'flex';
-            document.body.style.justifyContent = 'center';
-            document.body.style.alignItems = 'center';
-            document.body.style.overflow = 'hidden';
-            document.body.style.backgroundColor = '#000';
+            document.body.style.height = '100vh'; document.body.style.margin = '0';
+            document.body.style.display = 'flex'; document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center'; document.body.style.backgroundColor = '#000'; document.body.style.overflow = 'hidden';
         }
-        fitSlide();
-        window.addEventListener('resize', fitSlide);
+        fitSlide(); window.addEventListener('resize', fitSlide);
 
-        // --- 2. NAVIGATION (11 SLIDES) ---
+        // Liste des slides
         const slides = [
-            'slide1.html',  // Intro
-            'slide2.html',  // Cible SMM
-            'slide3.html',  // Arme MCE
-            'slide4.html',  // Brèche (Votre slide bonus)
-            'slide5.html',  // Forge
-            'slide6.html',  // Problème Timing
-            'slide7.html',  // Solution PCIe
-            'slide8.html',  // Fenêtre de Tir (Nouvelle)
-            'slide9.html',  // Attaque Cross-Core
-            'slide10.html', // Impact
-            'slide11.html'  // Conclusion
+            'slide1.html', 'slide2.html', 'slide3.html', 'slide4.html',
+            'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html',
+            'slide9.html', 'slide10.html', 'slide11.html'
         ];
-
         const path = window.location.pathname;
-        const page = path.split("/").pop() || 'slide1.html';
+        const page = path.split("/").pop() || 'index.html';
         const currentIndex = slides.indexOf(decodeURIComponent(page));
 
         function goToSlide(direction) {
@@ -380,17 +231,10 @@
         });
 
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
-        const leftZone = document.createElement('div');
-        leftZone.style.cssText = navStyle + "left:0;";
-        leftZone.onclick = () => goToSlide(-1);
-
-        const rightZone = document.createElement('div');
-        rightZone.style.cssText = navStyle + "right:0;";
-        rightZone.onclick = () => goToSlide(1);
-
-        document.body.appendChild(leftZone);
-        document.body.appendChild(rightZone);
+        const leftZone = document.createElement('div'); leftZone.style.cssText = navStyle + "left:0;"; leftZone.onclick = () => goToSlide(-1);
+        const rightZone = document.createElement('div'); rightZone.style.cssText = navStyle + "right:0;"; rightZone.onclick = () => goToSlide(1);
+        document.body.appendChild(leftZone); document.body.appendChild(rightZone);
     });
-</script>
+    </script>
 </body>
 </html>
