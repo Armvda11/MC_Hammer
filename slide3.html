@@ -4,249 +4,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Alerte Rouge du Processeur : Les MCE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #0a0e27;
-            color: #ffffff;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #000; color: #fff; overflow: hidden; }
+
         .slide {
-            width: 1280px;
-            height: 720px;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9));
-            display: flex;
-            flex-direction: column;
+            width: 1280px; height: 720px; position: relative;
+            /* FOND COHÉRENT AVEC SLIDE 2 : Dégradé radial bleu au centre */
+            background: radial-gradient(circle at center, #1b2744 0%, #050714 100%);
+
+            display: flex; flex-direction: column; padding: 40px 80px;
         }
-        .header {
-            padding: 40px 70px 20px;
+
+        .slide-number {
+            position: absolute; right: 20px; bottom: 14px;
+            color: #cbd6ff; font-size: 14px;
+            background: rgba(0,0,0,0.5); padding: 6px 12px; border-radius: 6px;
+            font-family: monospace; border: 1px solid rgba(255,255,255,0.1);
         }
-        .title {
-            font-size: 40px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
-        }
-        .title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background-color: #ff4d4d;
-        }
-        .content {
-            flex-grow: 1;
-            display: flex;
-            padding: 20px 70px 50px;
-        }
-        .left-section {
-            flex: 1;
-            padding-right: 40px;
-        }
-        .right-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .key-points {
-            margin-top: 20px;
-        }
-        .point {
-            margin-bottom: 30px;
-            display: flex;
-            align-items: flex-start;
-        }
-        .point-icon {
-            color: #a7c7ff;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-        .point-content {
-            flex-grow: 1;
-        }
-        .point-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #a7c7ff;
-        }
-        .point-desc {
-            font-size: 20px;
-            line-height: 1.4;
-        }
-        .highlight {
-            color: #ff4d4d;
-            font-weight: 600;
-        }
+
+        .title { font-size: 40px; font-weight: 700; color: #ffffff; margin-bottom: 20px; position: relative; display: inline-block; border-bottom: 4px solid #ff4d4d; padding-bottom: 10px; }
+
+        .content { display: flex; flex: 1; gap: 50px; align-items: center; }
+
+        /* GAUCHE */
+        .left-section { flex: 1; display: flex; flex-direction: column; gap: 30px; }
+
+        .point { display: flex; align-items: flex-start; background: rgba(167, 199, 255, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #a7c7ff; }
+        .point-icon { color: #a7c7ff; margin-right: 15px; font-size: 32px; }
+        .point-title { font-size: 22px; font-weight: 600; margin-bottom: 5px; color: #a7c7ff; }
+        .point-desc { font-size: 18px; line-height: 1.4; color: #ddd; }
+
+        .point-danger { background: rgba(255, 77, 77, 0.1); border-left-color: #ff4d4d; }
+        .point-danger .point-icon, .point-danger .point-title { color: #ff4d4d; }
+
+        /* DROITE : VISUEL BOUCLIER */
+        .right-section { flex: 1; display: flex; justify-content: center; }
+
         .visual-container {
-            width: 100%;
-            height: 400px;
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
+            width: 100%; height: 450px;
+            /* Fond légèrement transparent pour se fondre dans le dégradé */
+            background: rgba(10, 14, 39, 0.5);
+            border: 1px solid rgba(167, 199, 255, 0.2); border-radius: 20px;
+            position: relative; display: flex; align-items: center; justify-content: center;
         }
-        .slide-number { position: absolute; right: 20px; bottom: 14px; color: #cbd6ff; font-size: 14px; background: rgba(0,0,0,0.25); padding: 6px 10px; border-radius: 6px; }
-        .cpu-icon {
-            font-size: 120px;
-            color: #a7c7ff;
-            margin-bottom: 20px;
+
+        .cpu-target {
+            position: absolute; right: 40px;
+            width: 100px; height: 100px; border: 2px solid #a7c7ff; border-radius: 10px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(167, 199, 255, 0.1); color: #fff; font-weight: bold;
+            box-shadow: 0 0 20px rgba(167, 199, 255, 0.2); z-index: 1;
         }
-        .mce-label {
-            font-size: 32px;
-            font-weight: 700;
-            color: #ff4d4d;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
+
+        .shield-wall {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            height: 250px; width: 10px; background: #a7c7ff; border-radius: 5px;
+            box-shadow: 0 0 30px #a7c7ff; z-index: 5;
+            display: flex; align-items: center; justify-content: center;
         }
-        .nmi-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(255, 77, 77, 0.2);
-            border: 2px solid #ff4d4d;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 18px;
+        .shield-icon { font-size: 60px; color: #a7c7ff; background: #0a0e27; border-radius: 50%; padding: 10px; }
+        .shield-label { position: absolute; bottom: -30px; color: #a7c7ff; font-size: 14px; white-space: nowrap; }
+
+        .arrow-irq {
+            position: absolute; left: 40px; top: 120px;
+            display: flex; align-items: center; color: #a7c7ff; opacity: 0.6;
         }
-        .comparison {
-            display: flex;
-            width: 100%;
-            margin-top: 20px;
-            justify-content: space-between;
+        .arrow-line-irq { width: 150px; height: 4px; background: #a7c7ff; }
+        .arrow-head-irq { width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid #a7c7ff; }
+        .blocked-x { font-size: 40px; color: #ff4d4d; margin-left: 10px; font-weight: bold; }
+        .label-irq { position: absolute; top: -25px; left: 0; font-size: 14px; font-weight: bold; }
+
+        .arrow-mce {
+            position: absolute; left: 40px; bottom: 120px;
+            display: flex; align-items: center; color: #ff4d4d;
+            animation: pierce 2s infinite ease-in-out; z-index: 10;
         }
-        .comparison-item {
-            text-align: center;
-            flex: 1;
-            padding: 0 10px;
+        .arrow-line-mce { width: 380px; height: 8px; background: #ff4d4d; box-shadow: 0 0 15px #ff4d4d; }
+        .arrow-head-mce { width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 20px solid #ff4d4d; }
+        .label-mce { position: absolute; top: -30px; left: 0; font-size: 18px; font-weight: bold; text-transform: uppercase; }
+        .badge-nmi { background: #ff4d4d; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 10px; vertical-align: middle; }
+
+        @keyframes pierce {
+            0% { transform: translateX(0); width: 300px; }
+            50% { transform: translateX(20px); width: 320px; }
+            100% { transform: translateX(0); width: 300px; }
         }
-        .comparison-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-        .comparison-text {
-            font-size: 16px;
-        }
-        .interrupt {
-            color: #a7c7ff;
-        }
-        .nmi {
-            color: #ff4d4d;
-        }
+
     </style>
 </head>
 <body>
     <div class="slide">
-        <div class="header">
-            <h1 class="title">L'Alerte Rouge du Processeur : Les MCE</h1>
-        </div>
+        <h1 class="title">L'Alerte Rouge du Processeur : Les MCE</h1>
+
         <div class="content">
             <div class="left-section">
-                <div class="key-points">
-                    <div class="point">
-                        <i class="material-icons point-icon">error</i>
-                        <div class="point-content">
-                            <div class="point-title">MCE (Machine Check Exception)</div>
-                            <div class="point-desc">Signal d'erreur matérielle <span class="highlight">critique</span></div>
-                            <div class="point-desc">Déclencheurs: surchauffe, rayons cosmiques, défaillance physique</div>
-                        </div>
+                <div class="point">
+                    <i class="material-icons point-icon">error</i>
+                    <div>
+                        <div class="point-title">Machine Check Exception</div>
+                        <div class="point-desc">Erreur matérielle critique (surchauffe, rayon cosmique...).</div>
                     </div>
-                    <div class="point">
-                        <i class="material-icons point-icon">power_settings_new</i>
-                        <div class="point-content">
-                            <div class="point-title">Comportement standard</div>
-                            <div class="point-desc">Arrêt <span class="highlight">immédiat et forcé</span> du système</div>
-                            <div class="point-desc">Prévient la corruption des données</div>
-                        </div>
+                </div>
+
+                <div class="point">
+                    <i class="material-icons point-icon">power_settings_new</i>
+                    <div>
+                        <div class="point-title">Comportement Standard</div>
+                        <div class="point-desc">Arrêt immédiat (Crash) pour éviter la corruption de données.</div>
                     </div>
-                    <div class="point">
-                        <i class="material-icons point-icon">priority_high</i>
-                        <div class="point-content">
-                            <div class="point-title">Spécificité Cruciale</div>
-                            <div class="point-desc">Interruption <span class="highlight">non-masquable (NMI)</span></div>
-                            <div class="point-desc">Passe à travers toutes les défenses logicielles</div>
-                        </div>
+                </div>
+
+                <div class="point point-danger">
+                    <i class="material-icons point-icon">priority_high</i>
+                    <div>
+                        <div class="point-title">Le Point Faible</div>
+                        <div class="point-desc">C'est une <strong>NMI (Non-Maskable)</strong>. Elle ignore les défenses logicielles de l'OS.</div>
                     </div>
                 </div>
             </div>
+
             <div class="right-section">
                 <div class="visual-container">
-                    <div class="nmi-badge">NMI</div>
-                    <i class="material-icons cpu-icon">memory</i>
-                    <div class="mce-label">MCE</div>
-                    <div class="comparison">
-                        <div class="comparison-item">
-                            <i class="material-icons comparison-icon interrupt">block</i>
-                            <div class="comparison-text interrupt">Interruptions classiques (masquables)</div>
-                        </div>
-                        <div class="comparison-item">
-                            <i class="material-icons comparison-icon nmi">arrow_forward</i>
-                            <div class="comparison-text nmi">MCE (non-masquable)</div>
-                        </div>
+                    <div class="cpu-target">
+                        <i class="material-icons" style="font-size:40px; margin-bottom:5px;">memory</i>
+                        CPU
+                    </div>
+
+                    <div class="shield-wall">
+                        <i class="material-icons shield-icon">shield</i>
+                        <div class="shield-label">DÉFENSE LOGICIELLE (OS)</div>
+                    </div>
+
+                    <div class="arrow-irq">
+                        <div class="label-irq">Interruption Standard</div>
+                        <div class="arrow-line-irq"></div>
+                        <div class="arrow-head-irq"></div>
+                        <i class="material-icons blocked-x">close</i>
+                    </div>
+
+                    <div class="arrow-mce">
+                        <div class="label-mce">MCE <span class="badge-nmi">NMI</span></div>
+                        <div class="arrow-line-mce"></div>
+                        <div class="arrow-head-mce"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-<script>
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. AUTO-ZOOM ---
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
-            const baseWidth = 1280;
-            const baseHeight = 720;
-            const winWidth = window.innerWidth;
-            const winHeight = window.innerHeight;
-            const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
+            const baseWidth = 1280; const baseHeight = 720;
+            const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
             slide.style.transform = `scale(${scale})`;
-            document.body.style.height = '100vh';
-            document.body.style.margin = '0';
-            document.body.style.display = 'flex';
-            document.body.style.justifyContent = 'center';
-            document.body.style.alignItems = 'center';
-            document.body.style.overflow = 'hidden';
-            document.body.style.backgroundColor = '#000';
+            document.body.style.height = '100vh'; document.body.style.margin = '0';
+            document.body.style.display = 'flex'; document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center'; document.body.style.backgroundColor = '#000'; document.body.style.overflow = 'hidden';
         }
-        fitSlide();
-        window.addEventListener('resize', fitSlide);
+        fitSlide(); window.addEventListener('resize', fitSlide);
 
-        // --- 2. NAVIGATION (11 SLIDES) ---
+        // NAVIGATION
         const slides = [
-            'slide1.html',  // Intro
-            'slide2.html',  // Cible SMM
-            'slide3.html',  // Arme MCE
-            'slide4.html',  // Brèche (Votre slide bonus)
-            'slide5.html',  // Forge
-            'slide6.html',  // Problème Timing
-            'slide7.html',  // Solution PCIe
-            'slide8.html',  // Fenêtre de Tir (Nouvelle)
-            'slide9.html',  // Attaque Cross-Core
-            'slide10.html', // Impact
-            'slide11.html'  // Conclusion
+            'slide1.html', 'slide2.html', 'slide3.html', 'slide4.html',
+            'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html',
+            'slide9.html', 'slide10.html', 'slide11.html'
         ];
-
         const path = window.location.pathname;
         const page = path.split("/").pop() || 'slide1.html';
         const currentIndex = slides.indexOf(decodeURIComponent(page));
@@ -264,22 +192,16 @@
         });
 
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
-        const leftZone = document.createElement('div');
-        leftZone.style.cssText = navStyle + "left:0;";
-        leftZone.onclick = () => goToSlide(-1);
+        const leftZone = document.createElement('div'); leftZone.style.cssText = navStyle + "left:0;"; leftZone.onclick = () => goToSlide(-1);
+        const rightZone = document.createElement('div'); rightZone.style.cssText = navStyle + "right:0;"; rightZone.onclick = () => goToSlide(1);
+        document.body.appendChild(leftZone); document.body.appendChild(rightZone);
 
-        const rightZone = document.createElement('div');
-        rightZone.style.cssText = navStyle + "right:0;";
-        rightZone.onclick = () => goToSlide(1);
-
-        document.body.appendChild(leftZone);
-        document.body.appendChild(rightZone);
-        // slide number
+        // Numérotation
         const slideNumberEl = document.createElement('div');
         slideNumberEl.className = 'slide-number';
-        slideNumberEl.textContent = `${currentIndex+1} / ${slides.length}`;
+        slideNumberEl.textContent = `${currentIndex + 1} / ${slides.length}`;
         const slideEl = document.querySelector('.slide'); if (slideEl) slideEl.appendChild(slideNumberEl);
     });
-</script>
+    </script>
 </body>
 </html>

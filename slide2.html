@@ -1,385 +1,203 @@
 <!DOCTYPE html>
-<html lang="">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viser le Cœur du Système : Le SMM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #0a0e27;
-            color: #ffffff;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #000; color: #fff; overflow: hidden; }
+
         .slide {
-            width: 1280px;
-            height: 720px;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(rgba(10, 14, 39, 0.9), rgba(10, 14, 39, 0.9));
-            display: flex;
-            flex-direction: column;
+            width: 1280px; height: 720px; position: relative;
+            background: radial-gradient(circle at center, #1b2744 0%, #050714 100%);
+            display: flex; flex-direction: column; padding: 40px 80px;
         }
-        .slide-number { position: absolute; right: 20px; bottom: 14px; color: #cbd6ff; font-size: 14px; background: rgba(0,0,0,0.25); padding: 6px 10px; border-radius: 6px; }
-        .header {
-            padding: 20px 70px 10px;
+
+        .slide-number {
+            position: absolute; right: 20px; bottom: 14px;
+            color: #cbd6ff; font-size: 14px;
+            background: rgba(0,0,0,0.5); padding: 6px 12px; border-radius: 6px;
+            font-family: monospace; border: 1px solid rgba(255,255,255,0.1);
         }
-        .title {
-            font-size: 40px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
+
+        .title { font-size: 48px; font-weight: 700; border-bottom: 4px solid #ff4d4d; display: inline-block; padding-bottom: 10px; margin-bottom: 20px; }
+
+        .content { display: flex; flex: 1; gap: 40px; }
+
+        /* GAUCHE : Description */
+        .left-section { flex: 0.8; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+
+        .info-box {
+            background: rgba(167, 199, 255, 0.1); border-radius: 12px; padding: 20px;
+            border-left: 4px solid #a7c7ff;
         }
-        .title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background-color: #ff4d4d;
-        }
-        .content {
-            flex-grow: 1;
-            display: flex;
-            padding: 20px 70px 50px;
-        }
-        .left-section {
-            flex: 1;
-            padding-right: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .right-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .smm-description {
-            background-color: rgba(167, 199, 255, 0.1);
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 8px;
-            transform: translateY(-6px);
-        }
-        .section-title {
-            font-size: 28px;
-            font-weight: 600;
-            color: #a7c7ff;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-        }
-        .section-icon {
-            margin-right: 15px;
-            color: #a7c7ff;
-        }
-        .description-content {
-            font-size: 20px;
-            line-height: 1.5;
-        }
-        .highlight {
-            color: #ff4d4d;
-            font-weight: 600;
-        }
-        .vulnerability {
-            background-color: rgba(255, 77, 77, 0.1);
-            border-radius: 10px;
-            padding: 30px;
+        .box-title { font-size: 22px; font-weight: 600; color: #a7c7ff; margin-bottom: 10px; display: flex; align-items: center; }
+        .box-text { font-size: 18px; line-height: 1.4; color: #ddd; }
+        .highlight { color: #ff4d4d; font-weight: bold; }
+
+        .vuln-box {
+            background: rgba(255, 77, 77, 0.1); border-radius: 12px; padding: 20px;
             border-left: 4px solid #ff4d4d;
         }
-        .visual-container {
-            width: 100%;
-            height: 450px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .vuln-title { font-size: 22px; font-weight: 600; color: #ff4d4d; margin-bottom: 10px; display: flex; align-items: center; }
+
+        /* DROITE : Visuels Techniques */
+        .right-section { flex: 1.2; display: flex; flex-direction: column; gap: 20px; }
+
+        /* 1. Les Rings (Compact) */
+        .rings-mini {
+            height: 180px; position: relative; display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);
         }
-        .privilege-levels {
-            width: 100%;
-            height: 300px;
-            position: relative;
-            margin-bottom: 40px;
+        .ring {
+            position: absolute; border-radius: 50%; border: 1px dashed rgba(167, 199, 255, 0.3);
+            display: flex; justify-content: center; padding-top: 5px; font-size: 12px; color: #666;
         }
-        .level {
-            position: absolute;
-            width: 100%;
-            height: 60px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            font-size: 20px;
-            font-weight: 600;
-            left: 0;
+        .r3 { width: 300px; height: 300px; border-bottom: none; top: 20px; }
+        .r0 { width: 220px; height: 220px; border-color: rgba(167, 199, 255, 0.5); top: 60px; }
+        .rsmm {
+            width: 140px; height: 140px; background: radial-gradient(circle, #ff4d4d 0%, transparent 70%);
+            border: 2px solid #ff4d4d; top: 100px; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: bold; font-size: 18px; box-shadow: 0 0 20px rgba(255, 77, 77, 0.4);
+            animation: pulse 2s infinite;
         }
-        .level-ring3 {
-            top: 180px;
-            background-color: rgba(167, 199, 255, 0.2);
-            border: 1px solid #a7c7ff;
-            z-index: 1;
+
+        /* 2. Le Schéma IDTR (Détaillé) */
+        .tech-diagram {
+            flex: 1; background: rgba(10, 14, 39, 0.8); border: 1px solid #444; border-radius: 10px;
+            padding: 20px; position: relative; display: flex; flex-direction: column; align-items: center;
         }
-        .level-ring0 {
-            top: 120px;
-            background-color: rgba(167, 199, 255, 0.3);
-            border: 1px solid #a7c7ff;
-            z-index: 2;
+        .diagram-label { position: absolute; top: 10px; left: 15px; font-size: 14px; color: #888; text-transform: uppercase; }
+
+        .cpu-state {
+            background: #ff4d4d; color: #fff; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px; margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
         }
-        .level-ring-1 {
-            top: 60px;
-            background-color: rgba(167, 199, 255, 0.4);
-            border: 1px solid #a7c7ff;
-            z-index: 3;
-        }
-        .level-ring-2 {
-            top: 0;
-            background-color: rgba(255, 77, 77, 0.3);
-            border: 2px solid #ff4d4d;
-            z-index: 4;
-        }
-        .level-label {
-            margin-left: 20px;
-            color: #ffffff;
-        }
-        .level-name {
-            flex-grow: 1;
-        }
-        .smm-highlight {
-            color: #ff4d4d;
-            font-weight: 700;
-        }
-        .vulnerability-demo {
-            width: 100%;
-            background-color: rgba(10, 14, 39, 0.7);
-            border-radius: 10px;
-            padding: 20px;
+
+        /* Le Registre IDTR */
+        .register-container { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; width: 100%; justify-content: center; }
+        .reg-label { font-family: 'Fira Code', monospace; color: #a7c7ff; font-weight: bold; }
+        .reg-box {
+            border: 2px solid #ff4d4d; background: rgba(255, 77, 77, 0.1); padding: 10px 20px; border-radius: 5px;
+            font-family: 'Fira Code', monospace; color: #ff4d4d; font-weight: bold; min-width: 200px; text-align: center;
             position: relative;
         }
-        .demo-title {
-            font-size: 22px;
-            font-weight: 600;
-            color: #ff4d4d;
-            margin-bottom: 15px;
-            text-align: center;
+        /* Flèche qui sort du registre */
+        .pointer-arrow {
+            position: absolute; bottom: -35px; left: 50%; transform: translateX(-50%);
+            font-size: 30px; color: #ff4d4d; animation: bounce 1s infinite;
         }
-        .register-flow {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 20px;
+
+        /* Les Tables IDT */
+        .tables-container { display: flex; gap: 40px; justify-content: center; width: 100%; }
+
+        .idt-table {
+            border: 1px solid #555; border-radius: 8px; width: 160px; padding: 10px; text-align: center;
+            position: relative; transition: all 0.3s;
         }
-        .register {
-            width: 140px;
-            height: 80px;
-            background-color: rgba(167, 199, 255, 0.2);
-            border: 1px solid #a7c7ff;
-            border-radius: 5px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .register-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: #a7c7ff;
-            margin-bottom: 5px;
-        }
-        .register-value {
-            font-size: 16px;
-            color: #ffffff;
-        }
-        .arrow {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #ffffff;
-        }
-        .arrow-icon {
-            font-size: 30px;
-        }
-        .arrow-text {
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .vulnerability-point {
-            position: absolute;
-            top: 90px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(255, 77, 77, 0.2);
-            border: 1px solid #ff4d4d;
-            border-radius: 20px;
-            padding: 5px 15px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #ff4d4d;
-            white-space: nowrap;
-        }
-        .point-label {
-            position: absolute;
-            right: -10px;
-            top: -10px;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background-color: #ff4d4d;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-        }
+
+        /* IDT OS (Active & Piégée) */
+        .idt-os { border-color: #ff4d4d; background: rgba(255, 77, 77, 0.05); box-shadow: 0 0 15px rgba(255, 77, 77, 0.2); }
+        .idt-os .table-name { color: #ff4d4d; font-weight: bold; }
+        .idt-os .status { color: #ff4d4d; font-size: 12px; margin-top: 5px; }
+        .idt-os::before { content: 'ACTUELLE'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #ff4d4d; color: #000; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+
+        /* IDT SMM (Inacessible) */
+        .idt-smm { border-color: #4CAF50; opacity: 0.4; border-style: dashed; }
+        .idt-smm .table-name { color: #4CAF50; }
+        .idt-smm .status { color: #888; font-size: 12px; margin-top: 5px; }
+        .idt-smm::before { content: 'EN ATTENTE'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #333; color: #888; font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.4); } 70% { box-shadow: 0 0 0 20px rgba(255, 77, 77, 0); } }
+        @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(5px); } }
+
     </style>
 </head>
 <body>
     <div class="slide">
-        <div class="header">
-            <h1 class="title">Viser le Cœur du Système : Le SMM</h1>
-        </div>
+        <h1 class="title">Viser le Cœur du Système : Le SMM</h1>
+
         <div class="content">
             <div class="left-section">
-                <div class="smm-description">
-                    <div class="section-title">
-                        <i class="material-icons section-icon">security</i>
-                        La Cible : SMM (System Management Mode)
-                    </div>
-                    <div class="description-content">
-                        <div>• Souvent appelé le <span class="highlight">"Ring -2"</span></div>
-                        <div>• Mode d'exécution le plus privilégié</div>
-                        <div>• Plus que le noyau (Ring 0) et l'hyperviseur (Ring -1)</div>
-                        <div>• Gère le firmware, l'énergie et les fonctions matérielles</div>
+                <div class="info-box">
+                    <div class="box-title"><i class="material-icons" style="margin-right:10px">security</i> La Cible : SMM (Ring -2)</div>
+                    <div class="box-text">
+                        Mode le plus privilégié (au-dessus du Kernel et de l'Hyperviseur). Il gère le matériel critique et doit rester invisible.
                     </div>
                 </div>
-                <div class="vulnerability">
-                    <div class="section-title">
-                        <i class="material-icons section-icon">bug_report</i>
-                        La Vulnérabilité
-                    </div>
-                    <div class="description-content">
-                        <div>• Sur certains processeurs AMD</div>
-                        <div>• À l'entrée en SMM, le registre <span class="highlight">IDTR</span> n'est pas immédiatement nettoyé</div>
-                        <div>• Si une exception survient à ce moment précis</div>
-                        <div>• Le CPU utilise le gestionnaire d'interruptions de l'OS</div>
-                        <div>• Qui est contrôlé par l'attaquant</div>
+
+                <div class="vuln-box">
+                    <div class="vuln-title"><i class="material-icons" style="margin-right:10px">bug_report</i> La Faille IDTR</div>
+                    <div class="box-text">
+                        À l'instant T de l'entrée en SMM :
+                        <ul>
+                            <li>Le processeur a les <strong>droits absolus</strong>.</li>
+                            <li>Mais il utilise encore la <strong>table d'adresses (IDT) de l'OS</strong>.</li>
+                            <li>L'IDTR (le pointeur) n'a pas encore été mis à jour.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
+
             <div class="right-section">
-                <div class="visual-container">
-                    <div class="privilege-levels">
-                        <div class="level level-ring-2">
-                            <span class="level-name">SMM</span>
-                            <span class="level-label smm-highlight">Ring -2</span>
-                        </div>
-                        <div class="level level-ring-1">
-                            <span class="level-name">Hyperviseur</span>
-                            <span class="level-label">Ring -1</span>
-                        </div>
-                        <div class="level level-ring0">
-                            <span class="level-name">Noyau</span>
-                            <span class="level-label">Ring 0</span>
-                        </div>
-                        <div class="level level-ring3">
-                            <span class="level-name">Applications</span>
-                            <span class="level-label">Ring 3</span>
+                <div class="rings-mini">
+                    <div class="ring r3">Ring 3</div>
+                    <div class="ring r0">Ring 0</div>
+                    <div class="ring rsmm">SMM (-2)</div>
+                </div>
+
+                <div class="tech-diagram">
+                    <div class="diagram-label">État du Processeur</div>
+                    <div class="cpu-state">MODE SMM ACTIF</div>
+
+                    <div class="register-container">
+                        <span class="reg-label">REGISTRE IDTR :</span>
+                        <div class="reg-box">
+                            0xFFFF... (Adresse OS)
+                            <i class="material-icons pointer-arrow">arrow_downward</i>
                         </div>
                     </div>
 
-                    <div class="vulnerability-demo">
-                        <div class="demo-title">Fenêtre de Vulnérabilité à l'Entrée en SMM</div>
+                    <div class="tables-container">
+                        <div class="idt-table idt-os">
+                            <div class="table-name"><i class="material-icons" style="font-size:16px; vertical-align:middle">warning</i> IDT OS</div>
+                            <div class="status">Contrôlée par l'attaquant</div>
+                            <div style="margin-top:5px; font-size:10px; background:rgba(0,0,0,0.3); padding:2px;">Handler MCE = PIÈGE</div>
+                        </div>
 
-                        <div class="register-flow">
-                            <div class="register">
-                                <div class="register-name">IDTR OS</div>
-                                <div class="register-value">Contrôlé par l'attaquant</div>
-                                <div class="point-label">1</div>
-                            </div>
-
-                            <div class="arrow">
-                                <i class="material-icons arrow-icon">arrow_forward</i>
-                                <div class="arrow-text">Entrée en SMM</div>
-                            </div>
-
-                            <div class="register">
-                                <div class="register-name">IDTR SMM</div>
-                                <div class="register-value">Non encore chargé</div>
-                                <div class="point-label">2</div>
-                                <div class="vulnerability-point">VULNÉRABILITÉ</div>
-                            </div>
-
-                            <div class="arrow">
-                                <i class="material-icons arrow-icon">arrow_forward</i>
-                                <div class="arrow-text">Chargement</div>
-                            </div>
-
-                            <div class="register">
-                                <div class="register-name">IDTR SMM</div>
-                                <div class="register-value">Sécurisé</div>
-                                <div class="point-label">3</div>
-                            </div>
+                        <div class="idt-table idt-smm">
+                            <div class="table-name"><i class="material-icons" style="font-size:16px; vertical-align:middle">lock</i> IDT SMM</div>
+                            <div class="status">Pas encore chargée</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<script>
+
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. AUTO-ZOOM ---
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
-            const baseWidth = 1280;
-            const baseHeight = 720;
-            const winWidth = window.innerWidth;
-            const winHeight = window.innerHeight;
-            const scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
+            const baseWidth = 1280; const baseHeight = 720;
+            const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
             slide.style.transform = `scale(${scale})`;
-            document.body.style.height = '100vh';
-            document.body.style.margin = '0';
-            document.body.style.display = 'flex';
-            document.body.style.justifyContent = 'center';
-            document.body.style.alignItems = 'center';
-            document.body.style.overflow = 'hidden';
-            document.body.style.backgroundColor = '#000';
+            document.body.style.height = '100vh'; document.body.style.margin = '0';
+            document.body.style.display = 'flex'; document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center'; document.body.style.backgroundColor = '#000'; document.body.style.overflow = 'hidden';
         }
-        fitSlide();
-        window.addEventListener('resize', fitSlide);
+        fitSlide(); window.addEventListener('resize', fitSlide);
 
-        // --- 2. NAVIGATION (11 SLIDES) ---
+        // NAVIGATION
         const slides = [
-            'slide1.html',  // Intro
-            'slide2.html',  // Cible SMM
-            'slide3.html',  // Arme MCE
-            'slide4.html',  // Brèche (Votre slide bonus)
-            'slide5.html',  // Forge
-            'slide6.html',  // Problème Timing
-            'slide7.html',  // Solution PCIe
-            'slide8.html',  // Fenêtre de Tir (Nouvelle)
-            'slide9.html',  // Attaque Cross-Core
-            'slide10.html', // Impact
-            'slide11.html'  // Conclusion
+            'slide1.html', 'slide2.html', 'slide3.html', 'slide4.html',
+            'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html',
+            'slide9.html', 'slide10.html', 'slide11.html'
         ];
-
         const path = window.location.pathname;
         const page = path.split("/").pop() || 'slide1.html';
         const currentIndex = slides.indexOf(decodeURIComponent(page));
@@ -397,22 +215,17 @@
         });
 
         const navStyle = "position:fixed; top:0; bottom:0; width:15%; z-index:9999; cursor:pointer;";
-        const leftZone = document.createElement('div');
-        leftZone.style.cssText = navStyle + "left:0;";
-        leftZone.onclick = () => goToSlide(-1);
+        const leftZone = document.createElement('div'); leftZone.style.cssText = navStyle + "left:0;"; leftZone.onclick = () => goToSlide(-1);
+        const rightZone = document.createElement('div'); rightZone.style.cssText = navStyle + "right:0;"; rightZone.onclick = () => goToSlide(1);
+        document.body.appendChild(leftZone); document.body.appendChild(rightZone);
 
-        const rightZone = document.createElement('div');
-        rightZone.style.cssText = navStyle + "right:0;";
-        rightZone.onclick = () => goToSlide(1);
-
-        document.body.appendChild(leftZone);
-        document.body.appendChild(rightZone);
-        // slide number
+        // Numérotation
         const slideNumberEl = document.createElement('div');
         slideNumberEl.className = 'slide-number';
-        slideNumberEl.textContent = `${currentIndex+1} / ${slides.length}`;
-        const slideEl = document.querySelector('.slide'); if (slideEl) slideEl.appendChild(slideNumberEl);
+        slideNumberEl.textContent = `${currentIndex + 1} / ${slides.length}`;
+        const slideEl = document.querySelector('.slide');
+        if (slideEl) slideEl.appendChild(slideNumberEl);
     });
-</script>
+    </script>
 </body>
 </html>
