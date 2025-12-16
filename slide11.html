@@ -8,70 +8,99 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Source Sans Pro', sans-serif; background-color: #0a0e27; color: #ffffff; overflow: hidden; }
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #000; color: #ffffff; overflow: hidden; }
 
         .slide {
             width: 1280px; height: 720px; position: relative;
-            background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(10, 14, 39, 0.95));
-            display: flex; flex-direction: column; padding: 30px 80px;
+            /* FOND SOBRE HARMONISÉ (Sans image) */
+            background-color: #0a0e27;
+            background: linear-gradient(to bottom, #0a0e27, #050714);
+
+            display: flex; flex-direction: column; padding: 40px 80px;
         }
 
         .title { font-size: 42px; font-weight: 700; border-bottom: 4px solid #ff4d4d; display: inline-block; padding-bottom: 10px; margin-bottom: 20px; }
 
-        .content { display: flex; flex: 1; gap: 40px; }
+        .content { display: flex; flex: 1; gap: 50px; align-items: center; }
 
         /* GAUCHE : Texte compacté */
         .left-section { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
 
         .info-box {
             background: rgba(167, 199, 255, 0.1); border-radius: 10px; padding: 20px;
-            display: flex; flex-direction: column;
+            display: flex; flex-direction: column; border-left: 4px solid #a7c7ff;
         }
         .box-title { font-size: 22px; font-weight: 600; color: #a7c7ff; margin-bottom: 10px; display: flex; align-items: center; }
         .box-title i { margin-right: 10px; color: #a7c7ff; }
         .box-content { font-size: 18px; line-height: 1.4; color: #ddd; }
         .highlight { color: #ff4d4d; font-weight: bold; }
 
-        /* Style spécifique pour la conclusion (encadré rouge) */
+        /* Conclusion rouge */
         .conclusion-box {
-            background: rgba(255, 77, 77, 0.1); border-left: 4px solid #ff4d4d; border-radius: 8px; padding: 20px;
+            background: rgba(255, 77, 77, 0.1); border-left-color: #ff4d4d;
         }
-        .conclusion-title { color: #ff4d4d; }
-        .conclusion-title i { color: #ff4d4d; }
+        .conclusion-box .box-title, .conclusion-box .box-title i { color: #ff4d4d; }
 
-        /* DROITE : Visuel ajusté */
+        /* DROITE : Stack de sécurité */
         .right-section {
             flex: 1;
-            background: rgba(10, 14, 36, 0.69); border-radius: 15px; padding: 20px;
-            border: 1px solid rgba(167, 199, 255, 0.095);
+            background: rgba(10, 14, 36, 0.69); border-radius: 15px; padding: 30px;
+            border: 1px solid rgba(167, 199, 255, 0.1);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: inset 0 5px 18px rgba(0,0,0,0.32);
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
         }
-        .slide-number { position: absolute; right: 20px; bottom: 14px; color: #cbd6ff; font-size: 14px; background: rgba(0,0,0,0.25); padding: 6px 10px; border-radius: 6px; }
 
-        /* Couches de défense */
-        .layers-stack { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 30px; }
+        /* Couches de défense (Stack 3D) */
+        .layers-stack {
+            display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 40px;
+            perspective: 1000px;
+        }
+
         .layer {
-            width: 80%; height: 60px; margin-bottom: 10px; border-radius: 8px;
-            display: flex; align-items: center; padding: 0 20px; position: relative;
-            font-size: 18px; font-weight: 600;
+            width: 80%; height: 70px; margin-bottom: 15px; border-radius: 10px;
+            display: flex; align-items: center; padding: 0 25px; position: relative;
+            font-size: 20px; font-weight: 600;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
         }
-        .layer-hw { background: rgba(167, 199, 255, 0.2); border: 1px solid #a7c7ff; color: #a7c7ff; }
-        .layer-fw { background: rgba(255, 77, 77, 0.2); border: 1px solid #ff4d4d; color: #ff4d4d; width: 85%; z-index: 2; }
-        .layer-sw { background: rgba(167, 199, 255, 0.2); border: 1px solid #a7c7ff; color: #a7c7ff; width: 70%; }
 
-        .layer i { font-size: 28px; margin-right: 15px; }
+        /* Matériel (Bas) */
+        .layer-hw {
+            background: linear-gradient(135deg, rgba(167, 199, 255, 0.1), rgba(167, 199, 255, 0.2));
+            border: 1px solid #a7c7ff; color: #a7c7ff; order: 3; width: 90%;
+        }
+
+        /* Firmware (Milieu - Cible) */
+        .layer-fw {
+            background: linear-gradient(135deg, rgba(255, 77, 77, 0.2), rgba(255, 77, 77, 0.3));
+            border: 2px solid #ff4d4d; color: #ff4d4d; order: 2; width: 95%; z-index: 10;
+            transform: translateZ(20px);
+        }
+
+        /* OS (Haut) */
+        .layer-sw {
+            background: linear-gradient(135deg, rgba(167, 199, 255, 0.1), rgba(167, 199, 255, 0.2));
+            border: 1px solid #a7c7ff; color: #a7c7ff; order: 1; width: 90%;
+        }
+
+        .layer i { font-size: 32px; margin-right: 15px; }
+
         .patch-tag {
-            position: absolute; right: 15px; background: #ff4d4d; color: #fff;
-            padding: 2px 10px; border-radius: 15px; font-size: 12px; text-transform: uppercase;
+            position: absolute; right: -10px; top: -10px;
+            background: #ff4d4d; color: #fff;
+            padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: 800; text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.4);
+            animation: bounce 1s infinite alternate;
         }
 
         /* Leçons */
-        .lessons-box { width: 100%; background: rgba(167, 199, 255, 0.05); border-radius: 10px; padding: 20px; }
-        .lessons-head { font-size: 20px; font-weight: bold; color: #a7c7ff; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .lesson-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 16px; }
-        .lesson-item i { color: #ff4d4d; margin-right: 10px; font-size: 20px; }
+        .lessons-box { width: 100%; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; text-align: center; }
+        .lessons-head { font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .lesson-text { font-size: 16px; color: #ccc; font-style: italic; }
 
+        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-5px); } }
+
+        .slide-number { position: absolute; right: 20px; bottom: 14px; color: #cbd6ff; font-size: 14px; background: rgba(0,0,0,0.25); padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
@@ -84,45 +113,46 @@
                     <div class="box-title"><i class="material-icons">build</i> Patch Firmware</div>
                     <div class="box-content">
                         <div>• Solution critique : Mise à jour du <span class="highlight">Microcode</span> (BIOS/UEFI).</div>
-                        <div>• Verrouiller l'IDT <span class="highlight">avant</span> d'activer la gestion des erreurs MCE.</div>
+                        <div>• Verrouiller l'IDT <strong>avant</strong> d'activer la gestion des erreurs MCE.</div>
                     </div>
                 </div>
 
                 <div class="info-box">
                     <div class="box-title"><i class="material-icons">trending_up</i> Évolution Matérielle</div>
                     <div class="box-content">
-                        <div>• Les architectures récentes (AMD Zen+) ont corrigé cette faille logique.</div>
-                        <div>• La gestion des erreurs est désormais isolée plus tôt.</div>
+                        <div>• Architectures récentes (AMD Zen+) corrigées.</div>
+                        <div>• Isolation plus stricte des gestionnaires d'erreurs.</div>
                     </div>
                 </div>
 
                 <div class="info-box conclusion-box">
-                    <div class="box-title conclusion-title"><i class="material-icons">lightbulb</i> Conclusion</div>
+                    <div class="box-title"><i class="material-icons">lightbulb</i> Conclusion</div>
                     <div class="box-content">
                         <div>• La complexité matérielle (PCIe) peut casser la sécurité logicielle.</div>
-                        <div>• Fiabilité et Sécurité sont parfois contradictoires.</div>
+                        <div>• <strong>Fiabilité et Sécurité</strong> sont parfois ennemis.</div>
                     </div>
                 </div>
             </div>
 
             <div class="right-section">
                 <div class="layers-stack">
-                    <div class="layer layer-hw"><i class="material-icons">memory</i> Matériel</div>
+                    <div class="layer layer-sw">
+                        <i class="material-icons">computer</i> Logiciel (OS)
+                    </div>
+
                     <div class="layer layer-fw">
                         <i class="material-icons">developer_board</i> Firmware
-                        <span class="patch-tag">PATCH ICI</span>
+                        <div class="patch-tag">PATCH ICI</div>
                     </div>
-                    <div class="layer layer-sw"><i class="material-icons">computer</i> Logiciel (OS)</div>
+
+                    <div class="layer layer-hw">
+                        <i class="material-icons">memory</i> Matériel
+                    </div>
                 </div>
 
                 <div class="lessons-box">
-                    <div class="lessons-head"><i class="material-icons">school</i> Leçons Clés</div>
-                    <div class="lesson-item">
-                        <i class="material-icons">security</i> La sécurité est un processus continu.
-                    </div>
-                    <div class="lesson-item">
-                        <i class="material-icons">psychology</i> Toujours remettre en question les hypothèses "bas niveau".
-                    </div>
+                    <div class="lessons-head">Leçon Clé</div>
+                    <div class="lesson-text">"Toujours remettre en question les hypothèses bas niveau."</div>
                 </div>
             </div>
         </div>
@@ -130,7 +160,6 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // 1. AUTO-ZOOM
         function fitSlide() {
             const slide = document.querySelector('.slide');
             if (!slide) return;
@@ -143,7 +172,6 @@
         }
         fitSlide(); window.addEventListener('resize', fitSlide);
 
-        // 2. NAVIGATION (11 SLIDES)
         const slides = [
             'slide1.html', 'slide2.html', 'slide3.html', 'slide4.html',
             'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html',
@@ -169,7 +197,7 @@
         const leftZone = document.createElement('div'); leftZone.style.cssText = navStyle + "left:0;"; leftZone.onclick = () => goToSlide(-1);
         const rightZone = document.createElement('div'); rightZone.style.cssText = navStyle + "right:0;"; rightZone.onclick = () => goToSlide(1);
         document.body.appendChild(leftZone); document.body.appendChild(rightZone);
-        // slide number
+
         const slideNumberEl = document.createElement('div');
         slideNumberEl.className = 'slide-number';
         slideNumberEl.textContent = `${currentIndex+1} / ${slides.length}`;
